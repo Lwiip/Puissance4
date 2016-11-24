@@ -126,8 +126,8 @@ public class Grille {
 	private int detectWinDiagLeft(int x, int y){//Diagonal gauche
 		int compteur=1;
 		int id=this.grille[x][y].getIdJoueur();
-		int i=x;
-		int j=y;
+		int i=x-1;
+		int j=y-1;
 		if(id != 0){
 			while(i>=0 && j>=0){ // parcourt diagonal vers en haut à gauche
 				if(this.grille[i][j].getIdJoueur()!=id){
@@ -142,8 +142,8 @@ public class Grille {
 				i--;
 				j--;
 			}
-			i=x;
-			j=y;
+			i=x+1;
+			j=y+1;
 			while(i<this.x && j<this.y){ // parcourt diagonal vers en bas à droite
 				if(this.grille[i][j].getIdJoueur()!=id){
 					break;
@@ -165,8 +165,8 @@ public class Grille {
 	private int detectWinDiagRight(int x, int y){//Diagonal droite
 		int compteur=1;
 		int id=this.grille[x][y].getIdJoueur();
-		int i=x;
-		int j=y;
+		int i=x-1;
+		int j=y+1;
 		if(id != 0){
 			while(i>=0 && j<this.y){ // parcourt diagonal vers en haut à droite
 				if(this.grille[i][j].getIdJoueur()!=id){
@@ -181,8 +181,8 @@ public class Grille {
 				i--;
 				j++;
 			}
-			i=x;
-			j=y;
+			i=x+1;
+			j=y-1;
 			while(i<this.x && j>=0){ // parcourt diagonal vers en bas à gauche
 				if(this.grille[i][j].getIdJoueur()!=id){
 					break;
