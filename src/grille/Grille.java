@@ -58,7 +58,7 @@ public class Grille {
 	
 	
 //------------------------------------------------------------------------------------------------------------------	
-	private int detectWinCol(int x, int y){
+	private int detectWinCol(int x, int y){ //colone
 		int compteur=1;
 		int id=this.grille[x][y].getIdJoueur();
 		
@@ -91,7 +91,7 @@ public class Grille {
 	}
 	
 	
-	private int detectWinLine(int x, int y){
+	private int detectWinLine(int x, int y){//ligne
 		int compteur=1;
 		int id=this.grille[x][y].getIdJoueur();
 		
@@ -123,7 +123,7 @@ public class Grille {
 		return 0;
 	}
 	
-	private int detectWinDiagLeft(int x, int y){
+	private int detectWinDiagLeft(int x, int y){//Diagonal gauche
 		int compteur=1;
 		int id=this.grille[x][y].getIdJoueur();
 		int i=x;
@@ -162,7 +162,7 @@ public class Grille {
 	}
 	
 	
-	private int detectWinDiagRight(int x, int y){
+	private int detectWinDiagRight(int x, int y){//Diagonal droite
 		int compteur=1;
 		int id=this.grille[x][y].getIdJoueur();
 		int i=x;
