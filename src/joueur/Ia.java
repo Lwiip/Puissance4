@@ -1,6 +1,6 @@
 package joueur;
 
-class Ia extends Joueur{
+public class Ia extends Joueur{
 	
 	public Ia(){
 		this.id = 0;

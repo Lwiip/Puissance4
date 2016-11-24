@@ -1,7 +1,6 @@
 package joueur;
 
-class Human extends Joueur{
-	
+public class Human extends Joueur{
 	
 	public Human(){
 		this.id = 0;
@@ -14,6 +13,4 @@ class Human extends Joueur{
 		this.nom = nom;
 		this.human = true;
 	}
-	
-	//faire une lecture de la console (peut etre en sous packahe)
 }
