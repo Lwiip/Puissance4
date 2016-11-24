@@ -39,11 +39,87 @@ public class Puissance4 {
 				column = Integer.parseInt(writed);
 				grille.insertPion(column - 1, idJoueur);
 				grille.affichage();
+				if (grille.detectWin(grille.getTop(column-1), column -1)){
+					System.out.println("Le joueur " + idJoueur + " a gagné !");
+					System.exit(1);
+				}
 				j1turn = !(j1turn);
 			}
 
 		}
 	}
+	
+	
+	/*
+	 * 
+	 * 
+	 * SIMULATION
+	 * 
+	 * 
+	 */
+	
+	
+	public void simulation() {
+		String writed = new String();
+		int column = 0;
+		int idJoueur = 0;
+		boolean j1turn = true;
+		
+		grille.affichage();
+		
+		/*
+		 * entree utilisateur
+		 */
+		int nb_entree = 5;
+		String simu[] = new String[nb_entree];
+		simu[0] = "1";
+		simu[1] = "5";
+		simu[2] = "3";
+		simu[4] = "2";
+		simu[2] = "2";
+		
+		
+		for (int i = 0;;i++) {// boucle infiniiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiie
+			idJoueur = checkTurn(j1turn);
+			
+			System.out.println("Joueur " + idJoueur + " > ");
+			
+			if (i >=nb_entree){
+				//mettre un breakpoint ici
+			}
+			
+			writed = simu[i];
+
+			if (checkInt(writed)) { //penser a gere les depassement de colonne
+				column = Integer.parseInt(writed);
+				grille.insertPion(column - 1, idJoueur);
+				grille.affichage();
+				if (grille.detectWin(grille.getTop(column-1), column -1)){
+					System.out.println("Le joueur " + idJoueur + " a gagné !");
+					System.exit(1);
+				}
+				j1turn = !(j1turn);
+			}
+
+		}
+	}
+	
+	
+	
+	
+	/*
+	 * 
+	 * 
+	 * 
+	 * FIN SIMULATION
+	 * 
+	 * 
+	 * 
+	 */
+	
+	
+	
+	
 
 	private String readConsole() {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
