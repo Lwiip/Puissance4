@@ -43,6 +43,18 @@ public class Grille {
 		}
 	}
 	
+	public void insertPion(int y, int idJoueur){ //gerer le cas ou on sort de la grille, et plus rarement pas bon id
+		for(int i = 0; i < this.x; i++){
+			if (this.grille[i][y].getIdJoueur() != 0){ 	//si on on ntrouve un autre pion
+				this.grille[i-1][y].setIdJoueur(idJoueur);
+				return;
+			} else if(i == (this.x - 1)){ //si on est en bout de ligne
+				this.grille[i][y].setIdJoueur(idJoueur);
+				return;
+			}
+		}
+	}
+	
 	
 	/*
 	 * Getter et Setter
