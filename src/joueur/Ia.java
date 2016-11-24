@@ -3,11 +3,15 @@ package joueur;
 class Ia extends Joueur{
 	
 	public Ia(){
-		super();
+		this.id = 0;
+		this.nom = "Not declared";
+		this.human = false;
 	}
 	
 	public Ia(int id, String nom){
-		super(id, nom, false);
+		this.id = id; //gerer si jamais l'id est -1
+		this.nom = nom;
+		this.human = true;
 	}
 
 }

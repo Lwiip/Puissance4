@@ -1,21 +1,21 @@
 package joueur;
 
-public class Joueur {
-	private int id;
-	private String nom;
-	private boolean human;
+public abstract class Joueur {
+	protected int id;
+	protected String nom;
+	protected boolean human;
 	
-	public Joueur(){
-		this.id = 0;
-		this.nom = "Not declared";
-		this.human = false;
-	}
-	
-	public Joueur(int id, String nom, boolean isHuman){
-		this.id = id; //gerer si jamais l'id est -1
-		this.nom = nom;
-		this.human = isHuman;
-	}
+//	public Joueur(){
+//		this.id = 0;
+//		this.nom = "Not declared";
+//		this.human = false;
+//	}
+//	
+//	public Joueur(int id, String nom, boolean isHuman){
+//		this.id = id; //gerer si jamais l'id est -1
+//		this.nom = nom;
+//		this.human = isHuman;
+//	}
 	
 	/*
 	 * Getter et Setter
