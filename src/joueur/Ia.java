@@ -2,6 +2,7 @@ package joueur;
 
 import java.util.Random;
 
+import error.OutOfGrid;
 import grille.*;
 
 public class Ia extends Joueur {
@@ -20,7 +21,7 @@ public class Ia extends Joueur {
 
 	public static int dumbIa(int maxSize) {
 		Random rand = new Random();
-		int nombre = 1 + rand.nextInt(maxSize - 1); // Entre 0 et le nombre de
+		int nombre = 1 + rand.nextInt(maxSize); // Entre 0 et le nombre de
 													// colonne de la grille
 		return nombre;
 	}
@@ -33,25 +34,25 @@ public class Ia extends Joueur {
 		} else {
 			idJoueurAdv = 1;
 		}
-		
-		
-		for (int i = 1; i <= maxSize; i++) {
-			Grille grille2 = new Grille(grille);
-			grille2.insertPion(i - 1, idJoueurAdv);
-			if (grille2.detectWin(grille2.getTop(i - 1), i - 1)) {
-				System.out.println(i-1);
-				return i;
-			} else {
-				grille2.deletePion(i-1);
-				grille2.insertPion(i - 1, idJoueur);
+		try {
+			for (int i = 1; i <= maxSize; i++) {
+				Grille grille2 = new Grille(grille);
+				grille2.insertPion(i - 1, idJoueurAdv);
+
 				if (grille2.detectWin(grille2.getTop(i - 1), i - 1)) {
-					System.out.println(i-1);
-					return i;				
-				} 
+					return i;
+				} else {
+
+					grille2.deletePion(i - 1);
+					grille2.insertPion(i - 1, idJoueur);
+
+					if (grille2.detectWin(grille2.getTop(i - 1), i - 1)) {
+						return i;
+					}
+				}
 			}
+		} catch (OutOfGrid o) {
 		}
 		return dumbIa(maxSize);
-		
 	}
-
 }
