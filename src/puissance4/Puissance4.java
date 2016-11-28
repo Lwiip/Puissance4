@@ -68,7 +68,7 @@ public class Puissance4 {
 		 */
 		int nb_entree = 5;
 		String simu[] = new String[nb_entree];
-		simu[0] = "1";
+		simu[0] = "2";
 		simu[1] = "5";
 		simu[2] = "3";
 		simu[3] = "2";
@@ -91,13 +91,21 @@ public class Puissance4 {
 
 			if (checkInt(writed)) { // penser a gere les depassement de colonne
 				column = Integer.parseInt(writed);
-				grille.insertPion(column - 1, idJoueur);
-				grille.affichage();
-				if (grille.detectWin(grille.getTop(column - 1), column - 1)) {
-					System.out.println("Le joueur " + idJoueur + " a gagné !");
-					System.exit(1);
+				try {
+					grille.insertPion(column - 1, idJoueur);
+					grille.affichage();
+					if (grille.detectWin(grille.getTop(column - 1), column - 1)) {
+						System.out.println("Le joueur " + idJoueur + " a gagné !");
+						System.exit(1);
+					}
+					j1turn = !(j1turn);
+					
+				} catch(OutOfGrid o){
+					System.err.println("Veuillez rentrer une valeur valide !");
+					i--; //pour la simulation
 				}
-				j1turn = !(j1turn);
+				
+				
 			}
 
 		}
@@ -166,8 +174,7 @@ public class Puissance4 {
 			Integer.parseInt(writed); // teste la conversion a un int
 			return true;
 		} catch (NumberFormatException nfe) {
-			System.err
-					.println("Vous etes en cours de partie, veuillez quittez avec 'Sortir' ou rentrer un numero de colonne\n");
+			System.err.println("Vous etes en cours de partie, veuillez quittez avec 'Sortir' ou rentrer un numero de colonne\n");
 			return false;
 		}
 	}
