@@ -24,7 +24,7 @@ public class Ia extends Joueur {
 		this.intel= ia;
 	}
 
-	public static int play(int maxSize, Grille grille, int idJoueur){
+	public int play(int maxSize, Grille grille, int idJoueur){
 		if(this.intel=="random"){
 			return dumbIa(maxSize,grille);
 		}

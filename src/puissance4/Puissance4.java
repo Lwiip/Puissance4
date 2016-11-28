@@ -46,9 +46,11 @@ public class Puissance4 {
 					}
 	
 				} else { // si le joueur est un IA
-					column = Ia.play(this.grille.getY(), grille, idJoueur);
+					Ia tmpIa = (Ia)getJoueur(idJoueur);
+					column = tmpIa.play(this.grille.getY(), grille, idJoueur);
 				
 					grille.insertPion(column -1, idJoueur);
+					
 				}
 
 				grille.affichage();
@@ -88,75 +90,22 @@ public class Puissance4 {
 	 */
 
 	public void simulation() {
-		String writed = new String();
-		int column = 0;
-		int idJoueur = 0;
-		boolean j1turn = true;
-
-		grille.affichage();
-
-		/*
-		 * entree utilisateur
-		 */
-		int nb_entree = 4;
-		String simu[] = new String[nb_entree];
-		simu[0] = "1";
-		simu[1] = "2";
-		simu[2] = "1";
-		simu[3] = "2";
-		
-		
-
-		for (int i = 0;; i++) {// boucle
-								// infiniiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiie
-			idJoueur = checkTurn(j1turn);
-
-			System.out.println("Joueur " + idJoueur + " > ");
-			System.out.println(i);
-			if (i >= nb_entree) {
-				// mettre un breakpoint ici
-				System.out.println("exit...");
-				return;
-			}
-
-			writed = simu[i];
-			System.out.println(writed);
-
-			try {
-				// si le joueur est un humain
-				if (this.joueur1.getId() == idJoueur && this.joueur1.isHuman()
-						|| this.joueur2.getId() == idJoueur
-						&& this.joueur2.isHuman()) {
-
-					checkQuit(writed);
-					if (checkInt(writed)) { // penser a gere les depassement de
-											// colonne
-						column = Integer.parseInt(writed);
-						grille.insertPion(column - 1, idJoueur);
-					}
-	
-				} else { // si le joueur est un IA
-					//column = Ia.dumbIa(this.grille.getY());
-					column = Ia.cleverIa(this.grille.getY(), grille, idJoueur);
-					grille.insertPion(column -1, idJoueur);
-				}
-	
-				grille.affichage();
-				if (grille.detectWin(grille.getTop(column - 1), column - 1)) {
-					System.out.println("Le joueur " + idJoueur
-							+ " a gagné !");
-					System.exit(1);
-				}
-				j1turn = !(j1turn);
-			} catch(OutOfGrid o){
-				System.err.println("Veuillez rentrer une valeur valide !");
-			}
-			
-			if(grille.checkGridFull()){
-				System.out.println("Match nul !");
-				System.exit(1);
-			}
-		}
+//		String writed = new String();
+//		int column = 0;
+//		int idJoueur = 0;
+//		boolean j1turn = true;
+//
+//		grille.affichage();
+//
+//		/*
+//		 * entree utilisateur
+//		 */
+//		int nb_entree = 4;
+//		String simu[] = new String[nb_entree];
+//		simu[0] = "1";
+//		simu[1] = "2";
+//		simu[2] = "1";
+//		simu[3] = "2";
 	}
 
 	/*
@@ -208,7 +157,7 @@ public class Puissance4 {
 					}
 					idJoueur++;			
 				} 
-				else if (args[0].equalsIgnoreCase("ia clever")) {
+				else if (args[0].equalsIgnoreCase("ia:clever")) {
 					if (idJoueur == 1) {
 						this.joueur1 = new Ia(idJoueur, args[1],"clever");
 					} else {
