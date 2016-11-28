@@ -55,12 +55,16 @@ public class Puissance4 {
 				if (grille.detectWin(grille.getTop(column - 1), column - 1)) {
 					System.out.println("Le joueur " + idJoueur
 							+ " a gagné !");
-					System.exit(1);
+					return;
 				}
 				j1turn = !(j1turn);
 			} catch(OutOfGrid o){
 				System.err.println("Veuillez rentrer une valeur valide !");
-
+			}
+			
+			if(grille.checkGridFull()){
+				System.out.println("Match nul !");
+				System.exit(1);
 			}
 		}
 	}
@@ -100,7 +104,7 @@ public class Puissance4 {
 			if (i >= nb_entree) {
 				// mettre un breakpoint ici
 				System.out.println("exit...");
-				System.exit(0);
+				return;
 			}
 
 			writed = simu[i];

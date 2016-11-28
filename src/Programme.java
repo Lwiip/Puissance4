@@ -1,4 +1,4 @@
-import puissance4.*;
+import puissance4.Puissance4;
 
 public class Programme {
 

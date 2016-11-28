@@ -4,6 +4,7 @@ public abstract class Joueur {
 	protected int id;
 	protected String nom;
 	protected boolean human;
+	protected int score;
 	
 //	public Joueur(){
 //		this.id = 0;
@@ -16,6 +17,7 @@ public abstract class Joueur {
 //		this.nom = nom;
 //		this.human = isHuman;
 //	}
+	
 	
 	/*
 	 * Getter et Setter
@@ -42,5 +44,13 @@ public abstract class Joueur {
 
 	public void setHuman(boolean human) {
 		this.human = human;
+	}
+	
+	public int getScore() {
+		return score;
+	}
+
+	public void incScore() {
+		this.score++;
 	}
 }
