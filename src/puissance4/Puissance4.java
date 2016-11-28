@@ -25,21 +25,21 @@ public class Puissance4 {
 		int column = 0;
 		int idJoueur = 0;
 		boolean j1turn = true;
-		
+
 		grille.affichage();
-		
+
 		for (;;) {// boucle infiniiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiie
 			idJoueur = checkTurn(j1turn);
-			
+
 			System.out.println("Joueur " + idJoueur + " > ");
-			
+
 			writed = readConsole();
 			checkQuit(writed);
-			if (checkInt(writed)) { //penser a gere les depassement de colonne
+			if (checkInt(writed)) { // penser a gere les depassement de colonne
 				column = Integer.parseInt(writed);
 				grille.insertPion(column - 1, idJoueur);
 				grille.affichage();
-				if (grille.detectWin(grille.getTop(column-1), column -1)){
+				if (grille.detectWin(grille.getTop(column - 1), column - 1)) {
 					System.out.println("Le joueur " + idJoueur + " a gagné !");
 					System.exit(1);
 				}
@@ -48,25 +48,21 @@ public class Puissance4 {
 
 		}
 	}
-	
-	
+
 	/*
 	 * 
 	 * 
 	 * SIMULATION
-	 * 
-	 * 
 	 */
-	
-	
+
 	public void simulation() {
 		String writed = new String();
 		int column = 0;
 		int idJoueur = 0;
 		boolean j1turn = true;
-		
+
 		grille.affichage();
-		
+
 		/*
 		 * entree utilisateur
 		 */
@@ -75,26 +71,29 @@ public class Puissance4 {
 		simu[0] = "1";
 		simu[1] = "5";
 		simu[2] = "3";
+		simu[3] = "2";
 		simu[4] = "2";
-		simu[2] = "2";
-		
-		
-		for (int i = 0;;i++) {// boucle infiniiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiie
-			idJoueur = checkTurn(j1turn);
-			
-			System.out.println("Joueur " + idJoueur + " > ");
-			
-			if (i >=nb_entree){
-				//mettre un breakpoint ici
-			}
-			
-			writed = simu[i];
 
-			if (checkInt(writed)) { //penser a gere les depassement de colonne
+		for (int i = 0;; i++) {// boucle
+								// infiniiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiie
+			idJoueur = checkTurn(j1turn);
+
+			System.out.println("Joueur " + idJoueur + " > ");
+			System.out.println(i);
+			if (i >= nb_entree) {
+				// mettre un breakpoint ici
+				System.out.println("exit...");
+				System.exit(0);
+			}
+
+			writed = simu[i];
+			System.out.println(writed);
+
+			if (checkInt(writed)) { // penser a gere les depassement de colonne
 				column = Integer.parseInt(writed);
 				grille.insertPion(column - 1, idJoueur);
 				grille.affichage();
-				if (grille.detectWin(grille.getTop(column-1), column -1)){
+				if (grille.detectWin(grille.getTop(column - 1), column - 1)) {
 					System.out.println("Le joueur " + idJoueur + " a gagné !");
 					System.exit(1);
 				}
@@ -103,23 +102,13 @@ public class Puissance4 {
 
 		}
 	}
-	
-	
-	
-	
+
 	/*
 	 * 
 	 * 
 	 * 
 	 * FIN SIMULATION
-	 * 
-	 * 
-	 * 
 	 */
-	
-	
-	
-	
 
 	private String readConsole() {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -159,7 +148,8 @@ public class Puissance4 {
 					}
 					idJoueur++;
 				} else {
-					System.out.print("Le type de joueur doit etre 'humain' ou 'ia'\n > ");
+					System.out
+							.print("Le type de joueur doit etre 'humain' ou 'ia'\n > ");
 				}
 
 			} else {
@@ -167,8 +157,8 @@ public class Puissance4 {
 			}
 
 		} while (idJoueur < 3); // on s'assure que l'utilisateur ne peux pas
-									// rentrer d'autres valeurs que celles
-									// attendues
+								// rentrer d'autres valeurs que celles
+								// attendues
 	}
 
 	private boolean checkInt(String writed) {
@@ -176,13 +166,14 @@ public class Puissance4 {
 			Integer.parseInt(writed); // teste la conversion a un int
 			return true;
 		} catch (NumberFormatException nfe) {
-			System.err.println("Vous etes en cours de partie, veuillez quittez avec 'Sortir' ou rentrer un numero de colonne\n");
+			System.err
+					.println("Vous etes en cours de partie, veuillez quittez avec 'Sortir' ou rentrer un numero de colonne\n");
 			return false;
 		}
 	}
-	
-	private int checkTurn(boolean j1turn){
-		if (j1turn){
+
+	private int checkTurn(boolean j1turn) {
+		if (j1turn) {
 			return this.joueur1.getId();
 		} else {
 			return this.joueur2.getId();
