@@ -32,31 +32,34 @@ public class Puissance4 {
 			idJoueur = checkTurn(j1turn);
 
 			System.out.println("Joueur " + idJoueur + " > ");
-
-			// si le joueur est un humain
-			if (this.joueur1.getId() == idJoueur && this.joueur1.isHuman()
-					|| this.joueur2.getId() == idJoueur
-					&& this.joueur2.isHuman()) {
-				writed = readConsole();
-				checkQuit(writed);
-				if (checkInt(writed)) { // penser a gere les depassement de
-										// colonne
-					column = Integer.parseInt(writed);
-					grille.insertPion(column - 1, idJoueur);
+			try {
+				// si le joueur est un humain
+				if (this.joueur1.getId() == idJoueur && this.joueur1.isHuman()
+						|| this.joueur2.getId() == idJoueur
+						&& this.joueur2.isHuman()) {
+					writed = readConsole();
+					checkQuit(writed);
+					if (checkInt(writed)) { // penser a gere les depassement de
+											// colonne
+						column = Integer.parseInt(writed);
+						grille.insertPion(column - 1, idJoueur);
+					}
+	
+				} else { // si le joueur est un IA
+					column = Ia.dumbIa(this.grille.getY());
+					grille.insertPion(column -1, idJoueur);
 				}
-
-			} else { // si le joueur est un IA
-				column = Ia.dumbIa(this.grille.getY());
-				grille.insertPion(column -1, idJoueur);
+	
+				grille.affichage();
+				if (grille.detectWin(grille.getTop(column - 1), column - 1)) {
+					System.out.println("Le joueur " + idJoueur
+							+ " a gagné !");
+					System.exit(1);
+				}
+				j1turn = !(j1turn);
+			} catch(OutOfGrid o){
+				System.err.println("Veuillez rentrer une valeur valide !");
 			}
-
-			grille.affichage();
-			if (grille.detectWin(grille.getTop(column - 1), column - 1)) {
-				System.out.println("Le joueur " + idJoueur
-						+ " a gagné !");
-				System.exit(1);
-			}
-			j1turn = !(j1turn);
 		}
 	}
 
@@ -77,13 +80,14 @@ public class Puissance4 {
 		/*
 		 * entree utilisateur
 		 */
-		int nb_entree = 5;
+		int nb_entree = 4;
 		String simu[] = new String[nb_entree];
-		simu[0] = "2";
-		simu[1] = "5";
-		simu[2] = "3";
+		simu[0] = "1";
+		simu[1] = "2";
+		simu[2] = "1";
 		simu[3] = "2";
-		simu[4] = "2";
+		
+		
 
 		for (int i = 0;; i++) {// boucle
 								// infiniiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiie
@@ -100,25 +104,39 @@ public class Puissance4 {
 			writed = simu[i];
 			System.out.println(writed);
 
-			if (checkInt(writed)) { // penser a gere les depassement de colonne
-				column = Integer.parseInt(writed);
-				try {
-					grille.insertPion(column - 1, idJoueur);
-					grille.affichage();
-					if (grille.detectWin(grille.getTop(column - 1), column - 1)) {
-						System.out.println("Le joueur " + idJoueur + " a gagné !");
-						System.exit(1);
-					}
-					j1turn = !(j1turn);
-					
-				} catch(OutOfGrid o){
-					System.err.println("Veuillez rentrer une valeur valide !");
-					i--; //pour la simulation
-				}
-				
-				
-			}
+			try {
+				// si le joueur est un humain
+				if (this.joueur1.getId() == idJoueur && this.joueur1.isHuman()
+						|| this.joueur2.getId() == idJoueur
+						&& this.joueur2.isHuman()) {
 
+					checkQuit(writed);
+					if (checkInt(writed)) { // penser a gere les depassement de
+											// colonne
+						column = Integer.parseInt(writed);
+						grille.insertPion(column - 1, idJoueur);
+					}
+	
+				} else { // si le joueur est un IA
+					column = Ia.dumbIa(this.grille.getY());
+					grille.insertPion(column -1, idJoueur);
+				}
+	
+				grille.affichage();
+				if (grille.detectWin(grille.getTop(column - 1), column - 1)) {
+					System.out.println("Le joueur " + idJoueur
+							+ " a gagné !");
+					System.exit(1);
+				}
+				j1turn = !(j1turn);
+			} catch(OutOfGrid o){
+				System.err.println("Veuillez rentrer une valeur valide !");
+			}
+			
+			if(grille.checkGridFull()){
+				System.out.println("Match nul !");
+				System.exit(1);
+			}
 		}
 	}
 

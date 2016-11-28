@@ -61,6 +61,16 @@ public class Grille {
 		}
 	}
 	
+	public boolean checkGridFull(){
+		for (int i = 0; i < x; i++) {
+			for (int j = 0; j < y; j++) {
+				if (this.grille[i][j].getIdJoueur() == 0){ //si on a une case vide
+					return false;
+				}
+			}
+		}
+		return true;
+	}
 	
 	
 	
