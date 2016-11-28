@@ -19,10 +19,14 @@ public class Ia extends Joueur {
 		this.human = false;
 	}
 
-	public static int dumbIa(int maxSize) {
-		Random rand = new Random();
-		int nombre = 1 + rand.nextInt(maxSize); // Entre 0 et le nombre de
-													// colonne de la grille
+	public static int dumbIa(int maxSize, Grille grille) {
+		int nombre;
+		do {
+			Random rand = new Random();
+			nombre = 1 + rand.nextInt(maxSize);// Entre 0 et le nombre de
+												// colonne de la grille
+		} while (grille.checkColumnFull(nombre - 1));
+
 		return nombre;
 	}
 
@@ -37,22 +41,24 @@ public class Ia extends Joueur {
 		try {
 			for (int i = 1; i <= maxSize; i++) {
 				Grille grille2 = new Grille(grille);
-				grille2.insertPion(i - 1, idJoueurAdv);
-
-				if (grille2.detectWin(grille2.getTop(i - 1), i - 1)) {
-					return i;
-				} else {
-
-					grille2.deletePion(i - 1);
-					grille2.insertPion(i - 1, idJoueur);
+				if (!grille2.checkColumnFull(i - 1)) {
+					grille2.insertPion(i - 1, idJoueurAdv);
 
 					if (grille2.detectWin(grille2.getTop(i - 1), i - 1)) {
 						return i;
+					} else {
+
+						grille2.deletePion(i - 1);
+						grille2.insertPion(i - 1, idJoueur);
+
+						if (grille2.detectWin(grille2.getTop(i - 1), i - 1)) {
+							return i;
+						}
 					}
 				}
 			}
 		} catch (OutOfGrid o) {
 		}
-		return dumbIa(maxSize);
+		return dumbIa(maxSize,grille);
 	}
 }

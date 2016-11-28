@@ -59,7 +59,6 @@ public class Puissance4 {
 				}
 				j1turn = !(j1turn);
 			} catch(OutOfGrid o){
-				System.err.println("Veuillez rentrer une valeur valide !");
 				if(grille.checkGridFull()){
 					System.out.println("Match nul !");
 					System.exit(1);
