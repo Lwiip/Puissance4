@@ -17,6 +17,12 @@ class Pion {
 		this.idJoueur = idJoueur;
 	}
 	
+	public Pion(Pion another){
+		this.x=another.x;
+		this.y=another.y;
+		this.idJoueur=another.idJoueur;
+	}
+	
 	protected String affichePion(){
 		if(this.idJoueur == 1){
 			return " X ";

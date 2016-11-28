@@ -1,24 +1,57 @@
 package joueur;
+
 import java.util.Random;
 
-public class Ia extends Joueur{
-	
-	public Ia(){
+import grille.*;
+
+public class Ia extends Joueur {
+
+	public Ia() {
 		this.id = 0;
 		this.nom = "Not declared";
 		this.human = false;
 	}
-	
-	public Ia(int id, String nom){
-		this.id = id; //gerer si jamais l'id est -1
+
+	public Ia(int id, String nom) {
+		this.id = id; // gerer si jamais l'id est -1
 		this.nom = nom;
 		this.human = false;
 	}
-	
-	public static int dumbIa(int maxSize){
+
+	public static int dumbIa(int maxSize) {
 		Random rand = new Random();
-		int nombre = 1+ rand.nextInt(maxSize -1); //Entre 0 et le nombre de colonne de la grille	
+		int nombre = 1 + rand.nextInt(maxSize - 1); // Entre 0 et le nombre de
+													// colonne de la grille
 		return nombre;
+	}
+
+	public static int cleverIa(int maxSize, Grille grille, int idJoueur) {
+
+		int idJoueurAdv;
+		if (idJoueur == 1) {
+			idJoueurAdv = 2;
+		} else {
+			idJoueurAdv = 1;
+		}
+		
+		
+		for (int i = 1; i <= maxSize; i++) {
+			Grille grille2 = new Grille(grille);
+			grille2.insertPion(i - 1, idJoueurAdv);
+			if (grille2.detectWin(grille2.getTop(i - 1), i - 1)) {
+				System.out.println(i-1);
+				return i;
+			} else {
+				grille2.deletePion(i-1);
+				grille2.insertPion(i - 1, idJoueur);
+				if (grille2.detectWin(grille2.getTop(i - 1), i - 1)) {
+					System.out.println(i-1);
+					return i;				
+				} 
+			}
+		}
+		return dumbIa(maxSize);
+		
 	}
 
 }

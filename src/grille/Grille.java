@@ -21,10 +21,24 @@ public class Grille {
 		initGrille();
 	}
 	
+	public Grille(Grille another){
+		this.x=another.x;
+		this.y=another.y;
+		this.grille=new Pion[this.x][this.y];
+		copyGrille(another);
+	}
+	
 	private void initGrille(){ // Initialisation de la grille
 		for(int i = 0; i < this.x; i++){
 			for(int j = 0; j < this.y; j++){
 				this.grille[i][j] = new Pion();
+			}
+		}
+	}
+	private void copyGrille(Grille another){ // Initialisation de la grille
+		for(int i = 0; i < this.x; i++){
+			for(int j = 0; j < this.y; j++){
+				this.grille[i][j] = new Pion(another.grille[i][j]);
 			}
 		}
 	}
@@ -45,14 +59,29 @@ public class Grille {
 	}
 	
 	public void insertPion(int y, int idJoueur) throws OutOfGrid{ //gerer le cas ou on sort de la grille, et plus rarement pas bon id
+		int i=0;
 		try {
 		
-			for(int i = 0; i < this.x; i++){
-				if (this.grille[i][y].getIdJoueur() != 0){ 	//si on on ntrouve un autre pion
+			for(i = 0; i < this.x; i++){
+				if (this.grille[i][y].getIdJoueur() != 0){ 	//si on on trouve un autre pion
 					this.grille[i-1][y].setIdJoueur(idJoueur);
 					return;
 				} else if(i == (this.x - 1)){ //si on est en bout de ligne
 					this.grille[i][y].setIdJoueur(idJoueur);
+					return;
+				}
+			}
+		} catch (ArrayIndexOutOfBoundsException e){
+			throw new OutOfGrid(i,y);
+		}
+	}
+	
+	public void deletePion(int y) throws OutOfGrid{ //gerer le cas ou on sort de la grille, et plus rarement pas bon id
+		try {
+		
+			for(int i = 0; i < this.x; i++){
+				if (this.grille[i][y].getIdJoueur() != 0){ 	//si on on ntrouve un autre pion
+					this.grille[i][y].setIdJoueur(0);
 					return;
 				}
 			}

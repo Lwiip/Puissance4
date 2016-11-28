@@ -46,7 +46,8 @@ public class Puissance4 {
 				}
 
 			} else { // si le joueur est un IA
-				column = Ia.dumbIa(this.grille.getY());
+				//column = Ia.dumbIa(this.grille.getY());
+				column=Ia.cleverIa(this.grille.getY(),grille,idJoueur);
 				grille.insertPion(column -1, idJoueur);
 			}
 
