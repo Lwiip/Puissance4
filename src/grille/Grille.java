@@ -72,7 +72,7 @@ public class Grille {
 				}
 			}
 		} catch (ArrayIndexOutOfBoundsException e){
-			throw new OutOfGrid(i,y);
+			throw new OutOfGrid();
 		}
 	}
 	
@@ -98,6 +98,15 @@ public class Grille {
 				}
 			}
 		}
+		return true;
+	}
+	
+	public boolean checkColumnFull(int y){
+		for (int i = 0; i < x; i++) {
+				if (this.grille[i][y].getIdJoueur() == 0){ //si on a une case vide
+					return false;
+				}
+			}	
 		return true;
 	}
 	

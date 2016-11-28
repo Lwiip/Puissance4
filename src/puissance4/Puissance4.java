@@ -46,11 +46,11 @@ public class Puissance4 {
 					}
 	
 				} else { // si le joueur est un IA
-					column = Ia.dumbIa(this.grille.getY());
+					//column = Ia.dumbIa(this.grille.getY());
+					column = Ia.cleverIa(this.grille.getY(), grille, idJoueur);
 					grille.insertPion(column -1, idJoueur);
 				}
 
-	
 				grille.affichage();
 				if (grille.detectWin(grille.getTop(column - 1), column - 1)) {
 					System.out.println("Le joueur " + idJoueur
@@ -59,7 +59,10 @@ public class Puissance4 {
 				}
 				j1turn = !(j1turn);
 			} catch(OutOfGrid o){
-				System.err.println("Veuillez rentrer une valeur valide !");
+				if(grille.checkGridFull()){
+					System.out.println("Match nul !");
+					System.exit(1);
+				}
 			}
 			
 			if(grille.checkGridFull()){
@@ -72,7 +75,15 @@ public class Puissance4 {
 	/*
 	 * 
 	 * 
+	 * 
+	 * 
 	 * SIMULATION
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
 	 */
 
 	public void simulation() {
@@ -124,7 +135,8 @@ public class Puissance4 {
 					}
 	
 				} else { // si le joueur est un IA
-					column = Ia.dumbIa(this.grille.getY());
+					//column = Ia.dumbIa(this.grille.getY());
+					column = Ia.cleverIa(this.grille.getY(), grille, idJoueur);
 					grille.insertPion(column -1, idJoueur);
 				}
 	
@@ -151,6 +163,10 @@ public class Puissance4 {
 	 * 
 	 * 
 	 * FIN SIMULATION
+	 * 
+	 * 
+	 * 
+	 * 
 	 */
 
 	private String readConsole() {
