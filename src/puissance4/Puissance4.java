@@ -55,7 +55,8 @@ public class Puissance4 {
 				if (grille.detectWin(grille.getTop(column - 1), column - 1)) {
 					System.out.println("Le joueur " + idJoueur
 							+ " a gagné !");
-					return;
+					winJoueur(idJoueur);
+					//faire le wipe ici
 				}
 				j1turn = !(j1turn);
 			} catch(OutOfGrid o){
@@ -245,6 +246,20 @@ public class Puissance4 {
 		} else {
 			return this.joueur2.getId();
 		}
+	}
+	
+	private Joueur getJoueur(int id){
+		if (this.joueur1.getId() == id){
+			return this.joueur1;
+		} else if(this.joueur2.getId() == id){
+			return this.joueur2;
+		} else {
+			throw new InvalidJoueur(id);
+		}
+	}
+	
+	private void winJoueur(int id){
+		getJoueur(id).incScore();
 	}
 
 	private void checkQuit(String writed) {
