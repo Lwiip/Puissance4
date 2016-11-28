@@ -33,19 +33,30 @@ public class Puissance4 {
 
 			System.out.println("Joueur " + idJoueur + " > ");
 
-			writed = readConsole();
-			checkQuit(writed);
-			if (checkInt(writed)) { // penser a gere les depassement de colonne
-				column = Integer.parseInt(writed);
-				grille.insertPion(column - 1, idJoueur);
-				grille.affichage();
-				if (grille.detectWin(grille.getTop(column - 1), column - 1)) {
-					System.out.println("Le joueur " + idJoueur + " a gagné !");
-					System.exit(1);
+			// si le joueur est un humain
+			if (this.joueur1.getId() == idJoueur && this.joueur1.isHuman()
+					|| this.joueur2.getId() == idJoueur
+					&& this.joueur2.isHuman()) {
+				writed = readConsole();
+				checkQuit(writed);
+				if (checkInt(writed)) { // penser a gere les depassement de
+										// colonne
+					column = Integer.parseInt(writed);
+					grille.insertPion(column - 1, idJoueur);
 				}
-				j1turn = !(j1turn);
+
+			} else { // si le joueur est un IA
+				column = Ia.dumbIa(this.grille.getY());
+				grille.insertPion(column -1, idJoueur);
 			}
 
+			grille.affichage();
+			if (grille.detectWin(grille.getTop(column - 1), column - 1)) {
+				System.out.println("Le joueur " + idJoueur
+						+ " a gagné !");
+				System.exit(1);
+			}
+			j1turn = !(j1turn);
 		}
 	}
 
