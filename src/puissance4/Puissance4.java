@@ -51,7 +51,6 @@ public class Puissance4 {
 					grille.insertPion(column -1, idJoueur);
 				}
 
-	
 				grille.affichage();
 				if (grille.detectWin(grille.getTop(column - 1), column - 1)) {
 					System.out.println("Le joueur " + idJoueur
