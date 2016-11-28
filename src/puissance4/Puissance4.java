@@ -1,8 +1,10 @@
 package puissance4;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 
 import joueur.*;
 import grille.*;
@@ -13,17 +15,20 @@ public class Puissance4 {
 	private Joueur joueur1;
 	private Joueur joueur2;
 	private Grille grille;
+	private int nbPartie;
+	private int idJoueur;
 
 	public Puissance4() {
 		System.out.println("Debut du jeu ...");
 		initPlayers();
 		this.grille = new Grille(6, 7);
+		this.nbPartie = 0;
 	}
 
 	public void start() {
 		String writed = new String();
 		int column = 0;
-		int idJoueur = 0;
+		
 		boolean j1turn = true;
 
 		grille.affichage();
@@ -56,7 +61,7 @@ public class Puissance4 {
 					System.out.println("Le joueur " + idJoueur
 							+ " a gagné !");
 					winJoueur(idJoueur);
-					//faire le wipe ici
+					wipe();
 				}
 				j1turn = !(j1turn);
 			} catch(OutOfGrid o){
@@ -170,6 +175,45 @@ public class Puissance4 {
 	 * 
 	 */
 
+	private void wipe(){
+		String retour;
+		do{
+			System.out.println("Voulez vous continuer ? (Y/N)");
+			retour = readConsole();
+		}while(!(retour.equalsIgnoreCase("y")) && !(retour.equalsIgnoreCase("n")));
+		
+		if (retour.equalsIgnoreCase("n")) {//si on ne continue pas, on sauvegarde le score et exit
+			saveScore();
+			System.exit(0);
+		}
+		
+		nbPartie++;
+		grille.wipe();
+		if (nbPartie % 2 == 1) {
+			idJoueur = joueur2.getId();
+		} else {
+			idJoueur = joueur1.getId();
+		}
+		grille.affichage();
+		
+	}
+	
+	private void saveScore(){
+		File scoreFile = new File("score.v");
+	    try{
+		    if(scoreFile.exists()==false){ //si le fichier n'existe pas on le creer
+		            scoreFile.createNewFile();
+		    }
+		    PrintWriter out = new PrintWriter(scoreFile);
+		    out.append("Resultats :\n"
+		    		+ "Joueur 1 " + this.joueur1.getNom() + " : " + this.joueur1.getScore() + "\n"
+		    		+ "Joueur 2 " + this.joueur2.getNom() + " : " + this.joueur2.getScore() + "\n");
+		    out.close();
+	    }catch(IOException e){
+	        System.err.println("Erreur sauvegarde des scores !");
+	    }
+	}
+	
 	private String readConsole() {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		String read = new String();
