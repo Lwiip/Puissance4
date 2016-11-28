@@ -46,8 +46,8 @@ public class Puissance4 {
 					}
 	
 				} else { // si le joueur est un IA
-					//column = Ia.dumbIa(this.grille.getY());
-					column = Ia.cleverIa(this.grille.getY(), grille, idJoueur);
+					column = Ia.play(this.grille.getY(), grille, idJoueur);
+				
 					grille.insertPion(column -1, idJoueur);
 				}
 
@@ -199,14 +199,23 @@ public class Puissance4 {
 						this.joueur2 = new Human(idJoueur, args[1]);
 					}
 					idJoueur++;
-				} else if (args[0].equalsIgnoreCase("ia")) {
+				} else if (args[0].equalsIgnoreCase("ia:random")) {
 					if (idJoueur == 1) {
-						this.joueur1 = new Ia(idJoueur, args[1]);
+						this.joueur1 = new Ia(idJoueur, args[1],"random");
 					} else {
-						this.joueur2 = new Ia(idJoueur, args[1]);
+						this.joueur2 = new Ia(idJoueur, args[1],"random");
+					}
+					idJoueur++;			
+				} 
+				else if (args[0].equalsIgnoreCase("ia clever")) {
+					if (idJoueur == 1) {
+						this.joueur1 = new Ia(idJoueur, args[1],"clever");
+					} else {
+						this.joueur2 = new Ia(idJoueur, args[1],"clever");
 					}
 					idJoueur++;
-				} else {
+				}
+				else {
 					System.out
 							.print("Le type de joueur doit etre 'humain' ou 'ia'\n > ");
 				}
