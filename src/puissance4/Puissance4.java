@@ -75,7 +75,7 @@ public class Puissance4 {
 			
 			if(grille.checkGridFull()){
 				System.out.println("Match nul !");
-				System.exit(1);
+				wipe();
 			}
 		}
 	}
