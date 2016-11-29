@@ -6,13 +6,13 @@ import error.OutOfGrid;
 import grille.*;
 
 public class Ia extends Joueur {
-	private String intel; 
+	private String intel;
 
 	public Ia() {
 		this.id = 0;
 		this.nom = "Not declared";
 		this.human = false;
-		this.intel= "not declared";
+		this.intel = "not declared";
 		this.score = 0;
 	}
 
@@ -21,18 +21,18 @@ public class Ia extends Joueur {
 		this.nom = nom;
 		this.human = false;
 		this.score = 0;
-		this.intel= ia;
+		this.intel = ia;
 	}
 
-	public int play(int maxSize, Grille grille, int idJoueur){
-		if(this.intel=="random"){
-			return dumbIa(maxSize,grille);
-		}
-		else{
-			return cleverIa(maxSize,grille,idJoueur);
+	public int play(int maxSize, Grille grille, int idJoueur) {
+		if (this.intel == "random") {
+			return dumbIa(maxSize, grille);
+		} else {
+			return cleverIa(maxSize, grille, idJoueur);
+
 		}
 	}
-	
+
 	private static int dumbIa(int maxSize, Grille grille) {
 		int nombre;
 		do {
@@ -43,7 +43,6 @@ public class Ia extends Joueur {
 
 		return nombre;
 	}
-
 
 	private static int cleverIa(int maxSize, Grille grille, int idJoueur) {
 
@@ -74,8 +73,6 @@ public class Ia extends Joueur {
 			}
 		} catch (OutOfGrid o) {
 		}
-		return dumbIa(maxSize,grille);
+		return dumbIa(maxSize, grille);
 	}
-	
-
 }
