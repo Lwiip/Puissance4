@@ -299,7 +299,7 @@ public class Grille {
 				return i;
 			}
 		}
-		return i;
+		return i-1;
 	}
 
 	/*

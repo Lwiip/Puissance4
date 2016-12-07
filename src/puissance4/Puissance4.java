@@ -31,7 +31,7 @@ public class Puissance4 {
 
 	public void start() {
 		String writed = new String();
-		int column = 0;
+		int column = 1;
 
 		boolean j1turn = true;
 
@@ -53,6 +53,7 @@ public class Puissance4 {
 						column = Integer.parseInt(writed);
 						grille.insertPion(column - 1, idJoueur);
 						saveGame(idJoueur, column);
+						j1turn = !(j1turn);
 					}
 
 				} else { // si le joueur est un IA
@@ -61,7 +62,7 @@ public class Puissance4 {
 
 					grille.insertPion(column - 1, idJoueur);
 					saveGame(idJoueur, column);
-
+					j1turn = !(j1turn);
 				}
 
 				grille.affichage();
@@ -71,7 +72,7 @@ public class Puissance4 {
 					saveResult(idJoueur);
 					wipe();
 				}
-				j1turn = !(j1turn);
+				
 			} catch (OutOfGrid o) {
 				if (grille.checkGridFull()) {
 					System.out.println("Match nul !");
