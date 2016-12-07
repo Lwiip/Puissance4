@@ -31,8 +31,10 @@ public class Puissance4 {
 
 	public void start() {
 		String writed = new String();
-		int token=0; // pour gérer l'affichage de "Manche commence" dans le log
+		int token = 0; // pour gérer l'affichage de "Manche commence" dans le
+						// log
 		int column = 1;
+		boolean joueur_have_played = false;
 
 		boolean j1turn = true;
 
@@ -40,6 +42,7 @@ public class Puissance4 {
 
 		for (;;) {// boucle infiniiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiie
 			idJoueur = checkTurn(j1turn);
+			joueur_have_played = false;
 
 			System.out.println("Joueur " + idJoueur + " > ");
 			try {
@@ -55,9 +58,7 @@ public class Puissance4 {
 						grille.insertPion(column - 1, idJoueur);
 						saveGame(idJoueur, column, token);
 						token++;
-						j1turn = !(j1turn);
-						grille.affichage();
-
+						joueur_have_played = true;
 					}
 
 				} else { // si le joueur est un IA
@@ -67,38 +68,50 @@ public class Puissance4 {
 					grille.insertPion(column - 1, idJoueur);
 					saveGame(idJoueur, column, token);
 					token++;
+					joueur_have_played = true;
+					
+
+				}
+
+				if (joueur_have_played) {
 					j1turn = !(j1turn);
 					grille.affichage();
-
+					
+					if (grille.detectWin(grille.getTop(column - 1), column - 1)) {
+						System.out.println("Le joueur " + idJoueur
+								+ " a gagné !");
+						winJoueur(idJoueur);
+						saveResult(idJoueur);
+						token = 0;
+						wipe();
+					}
 				}
 
-				
-				if (grille.detectWin(grille.getTop(column - 1), column - 1)) {
-					System.out.println("Le joueur " + idJoueur + " a gagné !");
-					winJoueur(idJoueur);
-					saveResult(idJoueur);
-					token=0;
-					wipe();
-				}
-				
 			} catch (OutOfGrid o) {
 				if (grille.checkGridFull()) {
 					System.out.println("Match nul !");
-					saveResult(this.joueur1.getId(), this.joueur2.getId()); // affiche égalitée dans le log
-					token=0;
+					saveResult(this.joueur1.getId(), this.joueur2.getId()); // affiche
+																			// égalitée
+																			// dans
+																			// le
+																			// log
+					token = 0;
 					System.exit(1);
 				}
 			}
 
 			if (grille.checkGridFull()) {
 				System.out.println("Match nul !");
-				saveResult(this.joueur1.getId(), this.joueur2.getId()); // affiche égalitée dans le log
-				token=0;
+				saveResult(this.joueur1.getId(), this.joueur2.getId()); // affiche
+																		// égalitée
+																		// dans
+																		// le
+																		// log
+				token = 0;
 				wipe();
 			}
 		}
 	}
-
 
 	private void wipe() {
 		String retour;
@@ -126,9 +139,8 @@ public class Puissance4 {
 
 	}
 
-	
-	//-----------------------------------------------------------------------------------------------------------
-		//méthode pour remplir le fichier log.txt
+	// -----------------------------------------------------------------------------------------------------------
+	// méthode pour remplir le fichier log.txt
 	private void saveScore() {
 		File scoreFile = new File("score.v");
 		try {
@@ -146,8 +158,6 @@ public class Puissance4 {
 			System.err.println("Erreur sauvegarde des scores !");
 		}
 	}
-
-	
 
 	private void saveName() {
 		File saveLog = new File("log.txt");
@@ -191,8 +201,8 @@ public class Puissance4 {
 				saveLog.createNewFile();
 			}
 			Writer output;
-			output = new BufferedWriter(new FileWriter("log.txt", true)); 
-			if (token==0){
+			output = new BufferedWriter(new FileWriter("log.txt", true));
+			if (token == 0) {
 				output.append("Manche commence" + "\n");
 			}
 			output.append("Joueur " + idJoueur + " joue " + column + "\n");
@@ -201,7 +211,7 @@ public class Puissance4 {
 			System.err.println("Erreur sauvegarde saveGame !");
 		}
 	}
-	
+
 	private void saveResult(int idJoueur) {
 		File saveLog = new File("log.txt");
 		try {
@@ -210,15 +220,16 @@ public class Puissance4 {
 				saveLog.createNewFile();
 			}
 			Writer output;
-			output = new BufferedWriter(new FileWriter("log.txt", true)); 
-			output.append("Joueur " + idJoueur + " gagne" + "\n"
-					 + "score " + this.joueur1.getScore() + " - " + this.joueur2.getScore() + "\n");
+			output = new BufferedWriter(new FileWriter("log.txt", true));
+			output.append("Joueur " + idJoueur + " gagne" + "\n" + "score "
+					+ this.joueur1.getScore() + " - " + this.joueur2.getScore()
+					+ "\n");
 			output.close();
 		} catch (IOException e) {
 			System.err.println("Erreur sauvegarde saveResult !");
 		}
 	}
-	
+
 	private void saveResult(int idJoueur, int idJoueur2) {
 		File saveLog = new File("log.txt");
 		try {
@@ -227,15 +238,15 @@ public class Puissance4 {
 				saveLog.createNewFile();
 			}
 			Writer output;
-			output = new BufferedWriter(new FileWriter("log.txt", true)); 
-			output.append("égalité"  +"\n"
-					 + "score " + this.joueur1.getScore() + " - " + this.joueur2.getScore() + "\n" + "\n" +"\n" );
+			output = new BufferedWriter(new FileWriter("log.txt", true));
+			output.append("égalité" + "\n" + "score " + this.joueur1.getScore()
+					+ " - " + this.joueur2.getScore() + "\n" + "\n" + "\n");
 			output.close();
 		} catch (IOException e) {
 			System.err.println("Erreur sauvegarde saveResult !");
 		}
 	}
-	
+
 	private void saveFinal() {
 		File saveLog = new File("log.txt");
 		try {
@@ -244,16 +255,16 @@ public class Puissance4 {
 				saveLog.createNewFile();
 			}
 			Writer output;
-			output = new BufferedWriter(new FileWriter("log.txt", true)); 
+			output = new BufferedWriter(new FileWriter("log.txt", true));
 			output.append("Partie finie \n");
 			output.close();
 		} catch (IOException e) {
 			System.err.println("Erreur sauvegarde saveFinal");
 		}
 	}
-//-----------------------------------------------------------------------------------------------------
-	
-	
+
+	// -----------------------------------------------------------------------------------------------------
+
 	private String readConsole() {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		String read = new String();
