@@ -118,6 +118,16 @@ public class Puissance4 {
 
 	private void wipe() {
 		String retour;
+		
+
+		if(this.joueur1.getScore()==3 || this.joueur2.getScore()==3){
+			saveScore();
+			saveFinal();
+			System.out.println("La partie est terminée, le score final est " + this.joueur1.getScore() + " - " + this.joueur2.getScore()
+				+ "\n");
+			System.exit(0);
+		}
+		
 		do {
 			System.out.println("Voulez vous continuer ? (Y/N)");
 			retour = readConsole();
@@ -130,7 +140,7 @@ public class Puissance4 {
 			saveFinal();
 			System.exit(0);
 		}
-
+		
 		nbPartie++;
 		grille.wipe();
 		if (nbPartie % 2 == 1) {
