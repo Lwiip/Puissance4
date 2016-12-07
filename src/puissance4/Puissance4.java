@@ -275,8 +275,8 @@ public class Puissance4 {
 		}
 		return read;
 	}
-
-	private void initPlayers() {
+	
+	private void initPlayers(){
 		String writed = new String();
 		int idJoueur = 1; // on commence par le premier joueur
 
@@ -287,7 +287,7 @@ public class Puissance4 {
 										// fait juste entrée
 				String args[] = writed.split(" ", 2); // sépare le avant et
 														// apres le 1ere espace
-
+				
 				if (args[0].equalsIgnoreCase("humain")) {
 					if (idJoueur == 1) {
 						this.joueur1 = new Human(idJoueur, args[1]);
@@ -309,13 +309,16 @@ public class Puissance4 {
 						this.joueur2 = new Ia(idJoueur, args[1], "clever");
 					}
 					idJoueur++;
-				} else {
-					System.out
-							.print("Le type de joueur doit etre 'humain' ou 'ia'\n > ");
+				}
+				else{
+				
+					System.out.print("Le type de joueur doit etre 'humain' ou 'ia'\n > ");		
+					new ErrorInput(idJoueur);
 				}
 
 			} else {
 				System.out.print("Veuillez entrer du text\n > ");
+				 new ErrorInput(idJoueur);
 			}
 
 		} while (idJoueur < 3); // on s'assure que l'utilisateur ne peux pas
