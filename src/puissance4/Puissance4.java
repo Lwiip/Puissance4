@@ -5,11 +5,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.Writer;
 
 import joueur.*;
+import log.*;
 import grille.*;
 import error.*;
 
@@ -20,8 +18,10 @@ public class Puissance4 {
 	private Grille grille;
 	private int nbPartie;
 	private int idJoueur;
+//	private Log log;
 
 	public Puissance4() {
+		Log.clearLog();
 		System.out.println("Debut du jeu ...");
 		initPlayers();
 		saveName();
@@ -69,14 +69,13 @@ public class Puissance4 {
 					saveGame(idJoueur, column, token);
 					token++;
 					joueur_have_played = true;
-					
 
 				}
 
 				if (joueur_have_played) {
 					j1turn = !(j1turn);
 					grille.affichage();
-					
+
 					if (grille.detectWin(grille.getTop(column - 1), column - 1)) {
 						System.out.println("Le joueur " + idJoueur
 								+ " a gagné !");
@@ -160,107 +159,46 @@ public class Puissance4 {
 	}
 
 	private void saveName() {
-		File saveLog = new File("log.txt");
-		try {
-			if (saveLog.exists() == false) { // si le fichier n'existe pas on le
-												// creer
-				saveLog.createNewFile();
-			}
+		if (this.joueur1.isHuman()) {
+			Log.append("Joueur" + this.joueur1.getId() + " est humain "
+					+ this.joueur1.getNom() + "\n");
 
-			PrintWriter out = new PrintWriter(saveLog);
-			if (this.joueur1.isHuman()) {
-				out.append("Joueur" + this.joueur1.getId() + " est humain "
-						+ this.joueur1.getNom() + "\n");
+		} else {
+			Log.append("Joueur" + this.joueur1.getId() + " est une ia "
+					+ this.joueur1.getNom() + "\n");
 
-			} else {
-				out.append("Joueur" + this.joueur1.getId() + " est une ia "
-						+ this.joueur1.getNom() + "\n");
+		}
+		if (this.joueur2.isHuman()) {
+			Log.append("Joueur" + this.joueur2.getId() + " est humain "
+					+ this.joueur2.getNom() + "\n");
 
-			}
-			if (this.joueur2.isHuman()) {
-				out.append("Joueur" + this.joueur2.getId() + " est humain "
-						+ this.joueur2.getNom() + "\n");
+		} else {
+			Log.append("Joueur" + this.joueur2.getId() + " est une ia "
+					+ this.joueur2.getNom() + "\n");
 
-			} else {
-				out.append("Joueur" + this.joueur2.getId() + " est une ia "
-						+ this.joueur2.getNom() + "\n");
-
-			}
-			out.close();
-
-		} catch (IOException e) {
-			System.err.println("Erreur sauvegarde saveName !");
 		}
 	}
 
 	private void saveGame(int idJoueur, int column, int token) {
-		File saveLog = new File("log.txt");
-		try {
-			if (saveLog.exists() == false) { // si le fichier n'existe pas on le
-												// creer
-				saveLog.createNewFile();
-			}
-			Writer output;
-			output = new BufferedWriter(new FileWriter("log.txt", true));
-			if (token == 0) {
-				output.append("Manche commence" + "\n");
-			}
-			output.append("Joueur " + idJoueur + " joue " + column + "\n");
-			output.close();
-		} catch (IOException e) {
-			System.err.println("Erreur sauvegarde saveGame !");
+		if (token == 0) {
+			Log.append("Manche commence" + "\n");
 		}
+		Log.append("Joueur " + idJoueur + " joue " + column + "\n");
 	}
 
 	private void saveResult(int idJoueur) {
-		File saveLog = new File("log.txt");
-		try {
-			if (saveLog.exists() == false) { // si le fichier n'existe pas on le
-												// creer
-				saveLog.createNewFile();
-			}
-			Writer output;
-			output = new BufferedWriter(new FileWriter("log.txt", true));
-			output.append("Joueur " + idJoueur + " gagne" + "\n" + "score "
-					+ this.joueur1.getScore() + " - " + this.joueur2.getScore()
-					+ "\n");
-			output.close();
-		} catch (IOException e) {
-			System.err.println("Erreur sauvegarde saveResult !");
-		}
+		Log.append("Joueur " + idJoueur + " gagne" + "\n" + "score "
+				+ this.joueur1.getScore() + " - " + this.joueur2.getScore()
+				+ "\n");
 	}
 
 	private void saveResult(int idJoueur, int idJoueur2) {
-		File saveLog = new File("log.txt");
-		try {
-			if (saveLog.exists() == false) { // si le fichier n'existe pas on le
-												// creer
-				saveLog.createNewFile();
-			}
-			Writer output;
-			output = new BufferedWriter(new FileWriter("log.txt", true));
-			output.append("égalité" + "\n" + "score " + this.joueur1.getScore()
-					+ " - " + this.joueur2.getScore() + "\n" + "\n" + "\n");
-			output.close();
-		} catch (IOException e) {
-			System.err.println("Erreur sauvegarde saveResult !");
-		}
+		Log.append("égalité" + "\n" + "score " + this.joueur1.getScore()
+				+ " - " + this.joueur2.getScore() + "\n" + "\n" + "\n");
 	}
 
 	private void saveFinal() {
-		File saveLog = new File("log.txt");
-		try {
-			if (saveLog.exists() == false) { // si le fichier n'existe pas on le
-												// creer
-				saveLog.createNewFile();
-			}
-			Writer output;
-			output = new BufferedWriter(new FileWriter("log.txt", true));
-			output.append("Partie finie \n");
-			output.close();
-		} catch (IOException e) {
-			System.err.println("Erreur sauvegarde saveFinal");
-		}
+		Log.append("Partie finie \n");
 	}
 
 	// -----------------------------------------------------------------------------------------------------
