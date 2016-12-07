@@ -54,6 +54,7 @@ public class Puissance4 {
 						grille.insertPion(column - 1, idJoueur);
 						saveGame(idJoueur, column);
 						j1turn = !(j1turn);
+						grille.affichage();
 					}
 
 				} else { // si le joueur est un IA
@@ -63,9 +64,10 @@ public class Puissance4 {
 					grille.insertPion(column - 1, idJoueur);
 					saveGame(idJoueur, column);
 					j1turn = !(j1turn);
+					grille.affichage();
 				}
 
-				grille.affichage();
+				
 				if (grille.detectWin(grille.getTop(column - 1), column - 1)) {
 					System.out.println("Le joueur " + idJoueur + " a gagné !");
 					winJoueur(idJoueur);
