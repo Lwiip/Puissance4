@@ -32,6 +32,7 @@ public class Puissance4 {
 	public void start() {
 		String writed = new String();
 		int column = 0;
+		int token=0; // pour gérer l'affichage de "Manche commence" dans le log
 
 		boolean j1turn = true;
 
@@ -52,7 +53,8 @@ public class Puissance4 {
 											// colonne
 						column = Integer.parseInt(writed);
 						grille.insertPion(column - 1, idJoueur);
-						saveGame(idJoueur, column);
+						saveGame(idJoueur, column, token);
+						token++;
 					}
 
 				} else { // si le joueur est un IA
@@ -60,7 +62,8 @@ public class Puissance4 {
 					column = tmpIa.play(this.grille.getY(), grille, idJoueur);
 
 					grille.insertPion(column - 1, idJoueur);
-					saveGame(idJoueur, column);
+					saveGame(idJoueur, column, token);
+					token++;
 
 				}
 
@@ -69,18 +72,23 @@ public class Puissance4 {
 					System.out.println("Le joueur " + idJoueur + " a gagné !");
 					winJoueur(idJoueur);
 					saveResult(idJoueur);
+					token=0;
 					wipe();
 				}
 				j1turn = !(j1turn);
 			} catch (OutOfGrid o) {
 				if (grille.checkGridFull()) {
 					System.out.println("Match nul !");
+					saveResult(this.joueur1.getId(), this.joueur2.getId()); // affiche égalitée dans le log
+					token=0;
 					System.exit(1);
 				}
 			}
 
 			if (grille.checkGridFull()) {
 				System.out.println("Match nul !");
+				saveResult(this.joueur1.getId(), this.joueur2.getId()); // affiche égalitée dans le log
+				token=0;
 				wipe();
 			}
 		}
@@ -113,6 +121,9 @@ public class Puissance4 {
 
 	}
 
+	
+	//-----------------------------------------------------------------------------------------------------------
+		//méthode pour remplir le fichier log.txt
 	private void saveScore() {
 		File scoreFile = new File("score.v");
 		try {
@@ -132,8 +143,7 @@ public class Puissance4 {
 	}
 
 	
-//-----------------------------------------------------------------------------------------------------------
-	//méthode pour remplir le fichier log.txt
+
 	private void saveName() {
 		File saveLog = new File("log.txt");
 		try {
@@ -168,7 +178,7 @@ public class Puissance4 {
 		}
 	}
 
-	private void saveGame(int idJoueur, int column) {
+	private void saveGame(int idJoueur, int column, int token) {
 		File saveLog = new File("log.txt");
 		try {
 			if (saveLog.exists() == false) { // si le fichier n'existe pas on le
@@ -177,6 +187,9 @@ public class Puissance4 {
 			}
 			Writer output;
 			output = new BufferedWriter(new FileWriter("log.txt", true)); 
+			if (token==0){
+				output.append("Manche commence" + "\n");
+			}
 			output.append("Joueur " + idJoueur + " joue " + column + "\n");
 			output.close();
 		} catch (IOException e) {
@@ -194,6 +207,23 @@ public class Puissance4 {
 			Writer output;
 			output = new BufferedWriter(new FileWriter("log.txt", true)); 
 			output.append("Joueur " + idJoueur + " gagne" + "\n"
+					 + "score " + this.joueur1.getScore() + " - " + this.joueur2.getScore() + "\n");
+			output.close();
+		} catch (IOException e) {
+			System.err.println("Erreur sauvegarde saveResult !");
+		}
+	}
+	
+	private void saveResult(int idJoueur, int idJoueur2) {
+		File saveLog = new File("log.txt");
+		try {
+			if (saveLog.exists() == false) { // si le fichier n'existe pas on le
+												// creer
+				saveLog.createNewFile();
+			}
+			Writer output;
+			output = new BufferedWriter(new FileWriter("log.txt", true)); 
+			output.append("égalité"  +"\n"
 					 + "score " + this.joueur1.getScore() + " - " + this.joueur2.getScore() + "\n" + "\n" +"\n" );
 			output.close();
 		} catch (IOException e) {
