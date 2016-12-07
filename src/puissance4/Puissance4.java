@@ -18,7 +18,8 @@ public class Puissance4 {
 	private Grille grille;
 	private int nbPartie;
 	private int idJoueur;
-//	private Log log;
+
+	// private Log log;
 
 	public Puissance4() {
 		Log.clearLog();
@@ -52,13 +53,15 @@ public class Puissance4 {
 						&& this.joueur2.isHuman()) {
 					writed = readConsole();
 					checkQuit(writed);
-					if (checkInt(writed)) { // penser a gere les depassement de
-											// colonne
+					if (checkInt(writed)) { 
 						column = Integer.parseInt(writed);
 						grille.insertPion(column - 1, idJoueur);
 						saveGame(idJoueur, column, token);
 						token++;
 						joueur_have_played = true;
+					}
+					else{
+						new ErrorInput(writed);
 					}
 
 				} else { // si le joueur est un IA
@@ -213,8 +216,8 @@ public class Puissance4 {
 		}
 		return read;
 	}
-	
-	private void initPlayers(){
+
+	private void initPlayers() {
 		String writed = new String();
 		int idJoueur = 1; // on commence par le premier joueur
 
@@ -225,7 +228,7 @@ public class Puissance4 {
 										// fait juste entrée
 				String args[] = writed.split(" ", 2); // sépare le avant et
 														// apres le 1ere espace
-				
+
 				if (args[0].equalsIgnoreCase("humain")) {
 					if (idJoueur == 1) {
 						this.joueur1 = new Human(idJoueur, args[1]);
@@ -247,16 +250,16 @@ public class Puissance4 {
 						this.joueur2 = new Ia(idJoueur, args[1], "clever");
 					}
 					idJoueur++;
-				}
-				else{
-				
-					System.out.print("Le type de joueur doit etre 'humain' ou 'ia'\n > ");		
+				} else {
+
+					System.out
+							.print("Le type de joueur doit etre 'humain' ou 'ia'\n > ");
 					new ErrorInput(idJoueur);
 				}
 
 			} else {
 				System.out.print("Veuillez entrer du text\n > ");
-				 new ErrorInput(idJoueur);
+				new ErrorInput(idJoueur);
 			}
 
 		} while (idJoueur < 3); // on s'assure que l'utilisateur ne peux pas

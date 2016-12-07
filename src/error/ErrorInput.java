@@ -17,4 +17,8 @@ public class ErrorInput extends RuntimeException{
 		Log.append("Erreur saisie Joueur " + idJoueur + "\n");
 	}
 	
+	public ErrorInput(String writed){
+		Log.append("Erreur colone non valide " +writed+ "\n");
+		
+	}
 }
