@@ -84,6 +84,7 @@ public class Puissance4 {
 								+ " a gagné !");
 						winJoueur(idJoueur);
 						saveResult(idJoueur);
+						j1turn=false;
 						token = 0;
 						wipe();
 					}
@@ -137,6 +138,7 @@ public class Puissance4 {
 		} else {
 			idJoueur = joueur1.getId();
 		}
+		
 		grille.affichage();
 
 	}
