@@ -91,7 +91,7 @@ public class Grille {
 				}
 			}
 		} catch (ArrayIndexOutOfBoundsException e) {
-			throw new OutOfGrid();
+			throw new OutOfGrid(y);
 		}
 	}
 
