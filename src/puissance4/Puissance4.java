@@ -31,8 +31,8 @@ public class Puissance4 {
 
 	public void start() {
 		String writed = new String();
-		int column = 0;
 		int token=0; // pour gérer l'affichage de "Manche commence" dans le log
+		int column = 1;
 
 		boolean j1turn = true;
 
@@ -55,6 +55,9 @@ public class Puissance4 {
 						grille.insertPion(column - 1, idJoueur);
 						saveGame(idJoueur, column, token);
 						token++;
+						j1turn = !(j1turn);
+						grille.affichage();
+
 					}
 
 				} else { // si le joueur est un IA
@@ -64,10 +67,12 @@ public class Puissance4 {
 					grille.insertPion(column - 1, idJoueur);
 					saveGame(idJoueur, column, token);
 					token++;
+					j1turn = !(j1turn);
+					grille.affichage();
 
 				}
 
-				grille.affichage();
+				
 				if (grille.detectWin(grille.getTop(column - 1), column - 1)) {
 					System.out.println("Le joueur " + idJoueur + " a gagné !");
 					winJoueur(idJoueur);
@@ -75,7 +80,7 @@ public class Puissance4 {
 					token=0;
 					wipe();
 				}
-				j1turn = !(j1turn);
+				
 			} catch (OutOfGrid o) {
 				if (grille.checkGridFull()) {
 					System.out.println("Match nul !");

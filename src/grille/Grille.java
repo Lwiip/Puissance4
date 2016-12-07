@@ -91,7 +91,12 @@ public class Grille {
 				}
 			}
 		} catch (ArrayIndexOutOfBoundsException e) {
-			throw new OutOfGrid();
+			if (y < 0 || y > this.y -1) {
+				throw new OutOfGrid(y);
+			}
+			else if (getTop(y)<=0){
+				throw new OutOfGrid(y,1); //gere la colonne pleine
+			}
 		}
 	}
 
@@ -299,7 +304,7 @@ public class Grille {
 				return i;
 			}
 		}
-		return i;
+		return i - 1;
 	}
 
 	/*
