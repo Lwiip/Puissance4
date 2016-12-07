@@ -291,7 +291,7 @@ public class Puissance4 {
 						this.joueur2 = new Ia(idJoueur, args[1], "random");
 					}
 					idJoueur++;
-				} else if (args[0].equalsIgnoreCase("ia:clever")) {
+				} else if (args[0].equalsIgnoreCase("ia:monkey")) {
 					if (idJoueur == 1) {
 						this.joueur1 = new Ia(idJoueur, args[1], "clever");
 					} else {
