@@ -22,10 +22,8 @@ public class GetPropertyValues {
 		try {
 			Properties prop = new Properties();
 			String propFileName = "config.properties";
-			// System.out.println("Working Directory = " +
-			// System.getProperty("user.dir"));
-			inputStream = getClass().getResourceAsStream(propFileName);
-
+			inputStream = new FileInputStream(propFileName);
+			
 			if (inputStream != null) {
 				prop.load(inputStream);
 			} else {
