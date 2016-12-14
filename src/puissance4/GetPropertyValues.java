@@ -15,6 +15,9 @@ public class GetPropertyValues {
 	private int x;
 	private int y;
 	private int scoreWin;
+	private int nbPlayer;
+	
+
 	InputStream inputStream;
 
 	public void getPropValues() throws IOException {
@@ -36,6 +39,7 @@ public class GetPropertyValues {
 			x = Integer.parseInt(prop.getProperty("x"));
 			y = Integer.parseInt(prop.getProperty("y"));
 			scoreWin = Integer.parseInt(prop.getProperty("scoreWin"));
+			nbPlayer = Integer.parseInt(prop.getProperty("nbPlayer"));
 
 			inputStream.close();
 		} catch (Exception e) {
@@ -57,4 +61,9 @@ public class GetPropertyValues {
 	public int getScoreWin() {
 		return scoreWin;
 	}
+	
+	public int getNbPlayer() {
+		return nbPlayer;
+	}
+
 }

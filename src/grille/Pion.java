@@ -28,6 +28,16 @@ class Pion {
 			return " X ";
 		} else if(this.idJoueur == 2){
 			return " O ";
+		} else if(this.idJoueur == 3){
+			return " * ";
+		} else if(this.idJoueur == 4){
+			return " + ";
+		} else if(this.idJoueur == 5){
+			return " # ";
+		} else if(this.idJoueur == 6){
+			return " @ ";
+		} else if(this.idJoueur == 7){
+			return " $ ";
 		} else {
 			return " . ";
 		}

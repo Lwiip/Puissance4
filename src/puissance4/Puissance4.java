@@ -1,12 +1,8 @@
 package puissance4;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
-
-import jdk.nashorn.internal.parser.JSONParser;
 import joueur.*;
 import log.*;
 import grille.*;
@@ -14,12 +10,15 @@ import error.*;
 
 public class Puissance4 {
 
-	private Joueur joueur1;
-	private Joueur joueur2;
+	private Joueur joueur[];
+	// private Joueur joueur1;
+	// private Joueur joueur2;
 	private Grille grille;
 	private int nbPartie;
 	private int idJoueur;
 	private int scoreWin;
+	private int nbPlayer;
+
 	// private Log log;
 
 	public Puissance4() {
@@ -28,18 +27,19 @@ public class Puissance4 {
 		System.out.println("Debut du jeu ...");
 
 		GetPropertyValues properties = new GetPropertyValues();
-		int x=0;
-		int y=0;
+		int x = 0;
+		int y = 0;
 		try {
 			properties.getPropValues();
 			x = properties.getX();
 			y = properties.getY();
 			scoreWin = properties.getScoreWin();
+			nbPlayer = properties.getNbPlayer();
 		} catch (IOException e) {
 			System.err.println("Erreur lecture config");
-		} 
-
-		initPlayers();
+		}
+		joueur = new Joueur[nbPlayer];
+		initPlayers(nbPlayer);
 		saveName();
 		this.grille = new Grille(x, y);
 		this.nbPartie = 0;
@@ -52,26 +52,26 @@ public class Puissance4 {
 		int column = 1;
 		boolean joueur_have_played = false;
 
-		boolean j1turn = true;
-
 		grille.affichage();
 
+		int joueurStart = 1;
+		idJoueur = joueurStart - 1;
+
 		for (;;) {// boucle infiniiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiie
-			idJoueur = checkTurn(j1turn);
+			// idJoueur = checkTurn(j1turn);
 			joueur_have_played = false;
 
-			System.out.println("Joueur " + idJoueur + " > ");
+			System.out.println("Joueur " + (idJoueur+1) + " > ");
 			try {
 				// si le joueur est un humain
-				if (this.joueur1.getId() == idJoueur && this.joueur1.isHuman()
-						|| this.joueur2.getId() == idJoueur
-						&& this.joueur2.isHuman()) {
+
+				if (this.joueur[idJoueur].isHuman()) {
 					writed = readConsole();
 					checkQuit(writed);
 					if (checkInt(writed)) {
 						column = Integer.parseInt(writed);
-						grille.insertPion(column - 1, idJoueur);
-						saveGame(idJoueur, column, token);
+						grille.insertPion(column - 1, idJoueur + 1);
+						saveGame(idJoueur + 1, column, token);
 						token++;
 						joueur_have_played = true;
 					} else {
@@ -79,26 +79,36 @@ public class Puissance4 {
 					}
 
 				} else { // si le joueur est un IA
-					Ia tmpIa = (Ia) getJoueur(idJoueur);
-					column = tmpIa.play(this.grille.getY(), grille, idJoueur);
+					Ia tmpIa = (Ia) getJoueur(idJoueur + 1);
+					column = tmpIa.play(this.grille.getY(), grille,
+							idJoueur + 1);
 
-					grille.insertPion(column - 1, idJoueur);
-					saveGame(idJoueur, column, token);
+					grille.insertPion(column - 1, idJoueur + 1);
+					saveGame(idJoueur + 1, column, token);
 					token++;
 					joueur_have_played = true;
 
 				}
+				
+				if (!joueur_have_played){
+					idJoueur--;
+				}
 
 				if (joueur_have_played) {
-					j1turn = !(j1turn);
 					grille.affichage();
 
 					if (grille.detectWin(grille.getTop(column - 1), column - 1)) {
-						System.out.println("Le joueur " + idJoueur
+						System.out.println("Le joueur " + (idJoueur + 1)
 								+ " a gagné !");
-						winJoueur(idJoueur);
-						saveResult(idJoueur);
-						j1turn = false;
+						winJoueur(idJoueur + 1);
+						saveResult(idJoueur + 1, "pas egaglite");
+						joueurStart = ((joueurStart) % nbPlayer) + 1; // on
+																			// change
+																			// le
+																			// joueur
+																			// qui
+																			// commence
+						idJoueur = joueurStart - 1;
 						token = 0;
 						wipe();
 					}
@@ -107,11 +117,14 @@ public class Puissance4 {
 			} catch (OutOfGrid o) {
 				if (grille.checkGridFull()) {
 					System.out.println("Match nul !");
-					saveResult(this.joueur1.getId(), this.joueur2.getId()); // affiche
-																			// égalitée
-																			// dans
-																			// le
-																			// log
+					saveResult(0, "egalite"); // affiche égalitée dans le log
+					joueurStart = ((joueurStart) % nbPlayer) + 1; // on
+																		// change
+																		// le
+																		// joueur
+																		// qui
+																		// commence
+					idJoueur = joueurStart - 1;
 					token = 0;
 					System.exit(1);
 				}
@@ -119,13 +132,18 @@ public class Puissance4 {
 
 			if (grille.checkGridFull()) {
 				System.out.println("Match nul !");
-				saveResult(this.joueur1.getId(), this.joueur2.getId()); // affiche
-																		// égalitée
-																		// dans
-																		// le
-																		// log
+				saveResult(0, "egalite"); // affiche égalitée dans le log
+				joueurStart = ((joueurStart) % nbPlayer) + 1; // on change
+																	// le joueur
+																	// qui
+																	// commence
+				idJoueur = joueurStart - 1;
 				token = 0;
 				wipe();
+			}
+
+			if (token != 0) { // si la manche n'est pas terminée
+				idJoueur = (idJoueur + 1) % nbPlayer;
 			}
 		}
 	}
@@ -133,13 +151,14 @@ public class Puissance4 {
 	private void wipe() {
 		String retour;
 
-		if (this.joueur1.getScore() == scoreWin || this.joueur2.getScore() == scoreWin) {
-			// saveScore();
-			saveFinal();
-			System.out.println("La partie est terminée, le score final est "
-					+ this.joueur1.getScore() + " - " + this.joueur2.getScore()
-					+ "\n");
-			System.exit(0);
+		for (int i = 0; i < nbPlayer; i++) {
+			if (this.joueur[i].getScore() == scoreWin) {
+				saveFinal();
+				System.out
+						.println("La partie est terminée, le joueur gagnant est "
+								+ this.joueur[i].getNom());
+				System.exit(0);
+			}
 		}
 
 		do {
@@ -157,12 +176,6 @@ public class Puissance4 {
 
 		nbPartie++;
 		grille.wipe();
-		if (nbPartie % 2 == 1) {
-			idJoueur = joueur2.getId();
-		} else {
-			idJoueur = joueur1.getId();
-		}
-
 		grille.affichage();
 
 	}
@@ -177,23 +190,17 @@ public class Puissance4 {
 	// }
 
 	private void saveName() {
-		if (this.joueur1.isHuman()) {
-			Log.append("Joueur " + this.joueur1.getId() + " est humain "
-					+ this.joueur1.getNom() + "\n");
+		for (int i = 0; i < nbPlayer; i++) {
 
-		} else {
-			Log.append("Joueur " + this.joueur1.getId() + " est une ia "
-					+ this.joueur1.getNom() + "\n");
+			if (this.joueur[i].isHuman()) {
+				Log.append("Joueur " + this.joueur[i].getId() + " est humain "
+						+ this.joueur[i].getNom() + "\n");
 
-		}
-		if (this.joueur2.isHuman()) {
-			Log.append("Joueur " + this.joueur2.getId() + " est humain "
-					+ this.joueur2.getNom() + "\n");
+			} else {
+				Log.append("Joueur " + this.joueur[i].getId() + " est une ia "
+						+ this.joueur[i].getNom() + "\n");
 
-		} else {
-			Log.append("Joueur " + this.joueur2.getId() + " est une ia "
-					+ this.joueur2.getNom() + "\n");
-
+			}
 		}
 	}
 
@@ -204,15 +211,21 @@ public class Puissance4 {
 		Log.append("Joueur " + idJoueur + " joue " + column + "\n");
 	}
 
-	private void saveResult(int idJoueur) {
-		Log.append("Joueur " + idJoueur + " gagne" + "\n" + "score "
-				+ this.joueur1.getScore() + " - " + this.joueur2.getScore()
-				+ "\n");
+	private void saveResult(int idJoueur, String option) {
+		if (option.equals("egalite")) {
+			Log.append("Egalite" + "\n");
+			score();
+		} else {
+			Log.append("Joueur " + idJoueur + " gagne" + "\n");
+			score();
+		}
 	}
 
-	private void saveResult(int idJoueur, int idJoueur2) {
-		Log.append("Egalite" + "\n" + "score " + this.joueur1.getScore()
-				+ " - " + this.joueur2.getScore() + "\n");
+	private void score() {
+		for (int i = 0; i < this.nbPlayer - 1; i++) {
+			Log.append(this.joueur[i].getScore() + " - ");
+		}
+		Log.append(this.joueur[this.nbPlayer - 1].getScore() + "\n");
 	}
 
 	private void saveFinal() {
@@ -232,41 +245,30 @@ public class Puissance4 {
 		return read;
 	}
 
-	private void initPlayers() {
+	private void initPlayers(int nbJoueur) {
 		String writed = new String();
-		int idJoueur = 1; // on commence par le premier joueur
+		
 
-		do {
-			System.out.print("Joueur " + idJoueur + " ?\n > ");
+		for (int i = 0; i < nbJoueur; i++) {
+
+			System.out.print("Joueur " + (i+1) + " ?\n > ");
 			writed = readConsole();
-			if (!writed.isEmpty()) { // on s'assure que l'utilisateur n'a pas
+			if (!writed.isEmpty()) { // on s'assure que l'utilisateur n'a
+										// pas
 										// fait juste entrée
 				String args[] = writed.split(" ", 2); // sépare le avant et
-														// apres le 1ere espace
+														// apres le 1ere
+														// espace
 
 				if (args[0].equalsIgnoreCase("humain")) {
-					if (idJoueur == 1) {
-						this.joueur1 = new Human(idJoueur, args[1]);
-					} else {
-						this.joueur2 = new Human(idJoueur, args[1]);
-					}
-					idJoueur++;
-				} else if (args[0].equalsIgnoreCase("ia:random")) {
-					if (idJoueur == 1) {
-						this.joueur1 = new Ia(idJoueur, args[1], "random");
-					} else {
-						this.joueur2 = new Ia(idJoueur, args[1], "random");
-					}
-					idJoueur++;
-				} else if (args[0].equalsIgnoreCase("ia:monkey")) {
-					if (idJoueur == 1) {
-						this.joueur1 = new Ia(idJoueur, args[1], "clever");
-					} else {
-						this.joueur2 = new Ia(idJoueur, args[1], "clever");
-					}
-					idJoueur++;
-				} else {
+					this.joueur[i] = new Human(i+1, args[1]);
 
+				} else if (args[0].equalsIgnoreCase("ia:random")) {
+					this.joueur[i] = new Ia(i+1, args[1], "random");
+
+				} else if (args[0].equalsIgnoreCase("ia:monkey")) {
+					this.joueur[i] = new Ia(i+1, args[1], "clever");
+				} else {
 					System.out
 							.print("Le type de joueur doit etre 'humain' ou 'ia'\n > ");
 					new ErrorInput(idJoueur);
@@ -275,11 +277,10 @@ public class Puissance4 {
 			} else {
 				System.out.print("Veuillez entrer du text\n > ");
 				new ErrorInput(idJoueur);
+				i--;
 			}
 
-		} while (idJoueur < 3); // on s'assure que l'utilisateur ne peux pas
-								// rentrer d'autres valeurs que celles
-								// attendues
+		}
 	}
 
 	private boolean checkInt(String writed) {
@@ -293,22 +294,13 @@ public class Puissance4 {
 		}
 	}
 
-	private int checkTurn(boolean j1turn) {
-		if (j1turn) {
-			return this.joueur1.getId();
-		} else {
-			return this.joueur2.getId();
-		}
-	}
-
 	private Joueur getJoueur(int id) {
-		if (this.joueur1.getId() == id) {
-			return this.joueur1;
-		} else if (this.joueur2.getId() == id) {
-			return this.joueur2;
-		} else {
-			throw new InvalidJoueur(id);
+		for (int i = 0; i < nbPlayer; i++) {
+			if (this.joueur[i].getId() == id) {
+				return this.joueur[i];
+			}
 		}
+		throw new InvalidJoueur(id);
 	}
 
 	private void winJoueur(int id) {
