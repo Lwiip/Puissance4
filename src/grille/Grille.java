@@ -1,6 +1,7 @@
 package grille;
 
 import error.OutOfGrid;
+import error.ErrorCreateGrid;
 
 public class Grille {
 	private int x;
@@ -15,10 +16,19 @@ public class Grille {
 	}
 
 	public Grille(int x, int y) {
+		try {
+			if (x * y % 2 != 0 || y < 4) {
+				throw new ErrorCreateGrid(x, y);
+			}
+		} catch (ErrorCreateGrid e) {
+			System.exit(0);
+		}
+
 		this.x = x;
 		this.y = y;
 		this.grille = new Pion[x][y];
 		initGrille();
+
 	}
 
 	public Grille(Grille another) {
@@ -91,11 +101,10 @@ public class Grille {
 				}
 			}
 		} catch (ArrayIndexOutOfBoundsException e) {
-			if (y < 0 || y > this.y -1) {
+			if (y < 0 || y > this.y - 1) {
 				throw new OutOfGrid(y);
-			}
-			else if (getTop(y)<=0){
-				throw new OutOfGrid(y,1); //gere la colonne pleine
+			} else if (getTop(y) <= 0) {
+				throw new OutOfGrid(y, 1); // gere la colonne pleine
 			}
 		}
 	}

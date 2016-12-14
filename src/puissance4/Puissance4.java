@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 
+import jdk.nashorn.internal.parser.JSONParser;
 import joueur.*;
 import log.*;
 import grille.*;
@@ -18,15 +19,29 @@ public class Puissance4 {
 	private Grille grille;
 	private int nbPartie;
 	private int idJoueur;
-
+	private int scoreWin;
 	// private Log log;
 
 	public Puissance4() {
+
 		Log.clearLog();
 		System.out.println("Debut du jeu ...");
+
+		GetPropertyValues properties = new GetPropertyValues();
+		int x=0;
+		int y=0;
+		try {
+			properties.getPropValues();
+			x = properties.getX();
+			y = properties.getY();
+			scoreWin = properties.getScoreWin();
+		} catch (IOException e) {
+			System.err.println("Erreur lecture config");
+		} 
+
 		initPlayers();
 		saveName();
-		this.grille = new Grille(6, 7);
+		this.grille = new Grille(x, y);
 		this.nbPartie = 0;
 	}
 
@@ -53,14 +68,13 @@ public class Puissance4 {
 						&& this.joueur2.isHuman()) {
 					writed = readConsole();
 					checkQuit(writed);
-					if (checkInt(writed)) { 
+					if (checkInt(writed)) {
 						column = Integer.parseInt(writed);
 						grille.insertPion(column - 1, idJoueur);
 						saveGame(idJoueur, column, token);
 						token++;
 						joueur_have_played = true;
-					}
-					else{
+					} else {
 						new ErrorInput(writed);
 					}
 
@@ -84,7 +98,7 @@ public class Puissance4 {
 								+ " a gagné !");
 						winJoueur(idJoueur);
 						saveResult(idJoueur);
-						j1turn=false;
+						j1turn = false;
 						token = 0;
 						wipe();
 					}
@@ -118,16 +132,16 @@ public class Puissance4 {
 
 	private void wipe() {
 		String retour;
-		
 
-		if(this.joueur1.getScore()==3 || this.joueur2.getScore()==3){
-			saveScore();
+		if (this.joueur1.getScore() == scoreWin || this.joueur2.getScore() == scoreWin) {
+			// saveScore();
 			saveFinal();
-			System.out.println("La partie est terminée, le score final est " + this.joueur1.getScore() + " - " + this.joueur2.getScore()
-				+ "\n");
+			System.out.println("La partie est terminée, le score final est "
+					+ this.joueur1.getScore() + " - " + this.joueur2.getScore()
+					+ "\n");
 			System.exit(0);
 		}
-		
+
 		do {
 			System.out.println("Voulez vous continuer ? (Y/N)");
 			retour = readConsole();
@@ -136,11 +150,11 @@ public class Puissance4 {
 
 		if (retour.equalsIgnoreCase("n")) {// si on ne continue pas, on
 											// sauvegarde le score et exit
-			saveScore();
+											// saveScore();
 			saveFinal();
 			System.exit(0);
 		}
-		
+
 		nbPartie++;
 		grille.wipe();
 		if (nbPartie % 2 == 1) {
@@ -148,47 +162,36 @@ public class Puissance4 {
 		} else {
 			idJoueur = joueur1.getId();
 		}
-		
+
 		grille.affichage();
 
 	}
 
 	// -----------------------------------------------------------------------------------------------------------
 	// méthode pour remplir le fichier log.txt
-	private void saveScore() {
-		File scoreFile = new File("score.v");
-		try {
-			if (scoreFile.exists() == false) { // si le fichier n'existe pas on
-												// le creer
-				scoreFile.createNewFile();
-			}
-			PrintWriter out = new PrintWriter(scoreFile);
-			out.append("Resultats :\n" + "Joueur 1 " + this.joueur1.getNom()
-					+ " : " + this.joueur1.getScore() + "\n" + "Joueur 2 "
-					+ this.joueur2.getNom() + " : " + this.joueur2.getScore()
-					+ "\n");
-			out.close();
-		} catch (IOException e) {
-			System.err.println("Erreur sauvegarde des scores !");
-		}
-	}
+	// private void saveScore() {
+	// Log.append("Resultats :\n" + "Joueur 1 " + this.joueur1.getNom()
+	// + " : " + this.joueur1.getScore() + "\n" + "Joueur 2 "
+	// + this.joueur2.getNom() + " : " + this.joueur2.getScore()
+	// + "\n");
+	// }
 
 	private void saveName() {
 		if (this.joueur1.isHuman()) {
-			Log.append("Joueur" + this.joueur1.getId() + " est humain "
+			Log.append("Joueur " + this.joueur1.getId() + " est humain "
 					+ this.joueur1.getNom() + "\n");
 
 		} else {
-			Log.append("Joueur" + this.joueur1.getId() + " est une ia "
+			Log.append("Joueur " + this.joueur1.getId() + " est une ia "
 					+ this.joueur1.getNom() + "\n");
 
 		}
 		if (this.joueur2.isHuman()) {
-			Log.append("Joueur" + this.joueur2.getId() + " est humain "
+			Log.append("Joueur " + this.joueur2.getId() + " est humain "
 					+ this.joueur2.getNom() + "\n");
 
 		} else {
-			Log.append("Joueur" + this.joueur2.getId() + " est une ia "
+			Log.append("Joueur " + this.joueur2.getId() + " est une ia "
 					+ this.joueur2.getNom() + "\n");
 
 		}
@@ -208,8 +211,8 @@ public class Puissance4 {
 	}
 
 	private void saveResult(int idJoueur, int idJoueur2) {
-		Log.append("égalité" + "\n" + "score " + this.joueur1.getScore()
-				+ " - " + this.joueur2.getScore() + "\n" + "\n" + "\n");
+		Log.append("Egalite" + "\n" + "score " + this.joueur1.getScore()
+				+ " - " + this.joueur2.getScore() + "\n");
 	}
 
 	private void saveFinal() {
