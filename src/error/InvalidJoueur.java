@@ -13,5 +13,7 @@ public class InvalidJoueur extends RuntimeException{
 	
 	public InvalidJoueur(int id){
 		System.err.println("Utilisateur " + id + " inconnu !");
+		
+		
 	}
 }
