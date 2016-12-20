@@ -1,5 +1,7 @@
 package puissance4;
 
+import interface_graph.InterfaceGraph;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -18,6 +20,7 @@ public class Puissance4 {
 	private int idJoueur;
 	private int scoreWin;
 	private int nbPlayer;
+	private InterfaceGraph interf;
 
 	// private Log log;
 
@@ -42,6 +45,7 @@ public class Puissance4 {
 		initPlayers(nbPlayer);
 		saveName();
 		this.grille = new Grille(x, y);
+		this.interf = new InterfaceGraph(x, y, this.grille);
 		this.nbPartie = 0;
 	}
 

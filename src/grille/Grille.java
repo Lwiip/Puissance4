@@ -125,6 +125,13 @@ public class Grille {
 			throw new OutOfGrid();
 		}
 	}
+	
+	public int getIdJoueur(int x, int y){
+		if (x > this.x || y > this.y){
+			new OutOfGrid();
+		}
+		return this.grille[x][y].getIdJoueur();
+	}
 
 	public boolean checkGridFull() {
 		for (int i = 0; i < x; i++) {
