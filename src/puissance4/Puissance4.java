@@ -64,6 +64,8 @@ public class Puissance4 {
 		for (;;) {// boucle infiniiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiie
 			// idJoueur = checkTurn(j1turn);
 			joueur_have_played = false;
+			
+			this.interf.update();
 
 			System.out.println("Joueur " + (idJoueur+1) + " > ");
 			try {
