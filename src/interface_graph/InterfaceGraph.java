@@ -4,28 +4,43 @@ import error.InvalidJoueur;
 import grille.Grille;
 
 import javax.swing.*;
+
+import sun.org.mozilla.javascript.JavaAdapter;
+
+import com.sun.corba.se.spi.ior.WriteContents;
+
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.io.ByteArrayInputStream;
+import java.io.Console;
+import java.io.InputStream;
+import java.util.Scanner;
 
 public class InterfaceGraph {
 	private JButton boutons[];
 	private JLabel pions[][];
-	
+
 	private Panneau pan = new Panneau();
 	private JFrame fenetre;
 
 	private int largeur;
 	private int hauteur;
 	private Grille grille;
+	private int clic;
 
 	public InterfaceGraph(int x, int y, Grille gri) {
 
 		this.grille = gri;
 		this.largeur = y;
 		this.hauteur = x;
-		
+
 		pan.setLargeur(y);
 		pan.setHauteur(x);
 		pan.setGrille(gri);
+		
+		this.clic = -1;
 
 		this.fenetre = new JFrame();
 
@@ -52,30 +67,51 @@ public class InterfaceGraph {
 		fenetre.setLayout(gl);
 		// On ajoute le bouton au content pane de la JFram
 		boutons = new JButton[largeur]; // nb de colonnes
+		int i = 0;
 		for (JButton elem : boutons) {
 			elem = new JButton();
 			elem.setOpaque(false);
 			elem.setContentAreaFilled(false);
-			// elem.setBorderPainted(false);
-			
-			
-			
+
+			elem.setActionCommand("" + i);
+			elem.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+					int j = Integer.parseInt(arg0.getActionCommand());
+					clic = j + 1;
+				}
+			});
+			i++;
 			fenetre.getContentPane().add(elem);
 		}
-
 
 		// Et enfin, la rendre visible
 		fenetre.setVisible(true);
 
 	}
 
-	public void update(){
+	public void update() {
 		this.fenetre.repaint();
 	}
 
-	public static void main(String[] args) {
-
-		InterfaceGraph inter = new InterfaceGraph(7, 6, new Grille(7, 6));
-
+	
+	
+	public int getClic() {
+		return clic;
 	}
+
+	public void setClic(int clic) {
+		this.clic = clic;
+	}
+
+
+	
+	
+	
+//	public static void main(String[] args) {
+//
+//		InterfaceGraph inter = new InterfaceGraph(7, 6, new Grille(7, 6));
+//
+//	}
 }

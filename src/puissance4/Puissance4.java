@@ -4,7 +4,10 @@ import interface_graph.InterfaceGraph;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Scanner;
+
 import joueur.*;
 import log.*;
 import grille.*;
@@ -21,8 +24,6 @@ public class Puissance4 {
 	private int scoreWin;
 	private int nbPlayer;
 	private InterfaceGraph interf;
-
-	// private Log log;
 
 	public Puissance4() {
 
@@ -51,6 +52,7 @@ public class Puissance4 {
 
 	public void start() {
 		String writed = new String();
+
 		int token = 0; // pour gérer l'affichage de "Manche commence" dans le
 						// log
 		int column = 1;
@@ -62,17 +64,49 @@ public class Puissance4 {
 		idJoueur = joueurStart - 1;
 
 		for (;;) {// boucle infiniiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiie
+//			System.setIn(sauv);
 			// idJoueur = checkTurn(j1turn);
 			joueur_have_played = false;
-			
+
 			this.interf.update();
 
-			System.out.println("Joueur " + (idJoueur+1) + " > ");
+			System.out.println("Joueur " + (idJoueur + 1) + " > ");
 			try {
 				// si le joueur est un humain
 
 				if (this.joueur[idJoueur].isHuman()) {
-					writed = readConsole();
+					// this.writed = readConsole();
+					InputStream test = System.in;
+					
+					InputStreamReader fileInputStream=new InputStreamReader(System.in);
+				    BufferedReader bufferedReader=new BufferedReader(fileInputStream);
+					
+				    try {
+						while (System.in.available() <= 0 && interf.getClic() == -1){
+							//boucle d'attente
+						}
+						
+						if (System.in.available() > 0){
+					    	writed = bufferedReader.readLine();
+					    }
+						
+						if (interf.getClic() != -1){
+							writed = "" + interf.getClic() + "";
+							interf.setClic(-1); //reinit le clic
+						}
+						
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				    
+				    
+				    
+				    
+//					Scanner scanner = new Scanner(System.in);
+					
+
+					
+
 					checkQuit(writed);
 					if (checkInt(writed)) {
 						column = Integer.parseInt(writed);
@@ -95,8 +129,8 @@ public class Puissance4 {
 					joueur_have_played = true;
 
 				}
-				
-				if (!joueur_have_played){
+
+				if (!joueur_have_played) {
 					idJoueur--;
 				}
 
@@ -109,11 +143,11 @@ public class Puissance4 {
 						winJoueur(idJoueur + 1);
 						saveResult(idJoueur + 1, "pas egaglite");
 						joueurStart = ((joueurStart) % nbPlayer) + 1; // on
-																			// change
-																			// le
-																			// joueur
-																			// qui
-																			// commence
+																		// change
+																		// le
+																		// joueur
+																		// qui
+																		// commence
 						idJoueur = joueurStart - 1;
 						token = 0;
 						wipe();
@@ -125,11 +159,11 @@ public class Puissance4 {
 					System.out.println("Match nul !");
 					saveResult(0, "egalite"); // affiche égalitée dans le log
 					joueurStart = ((joueurStart) % nbPlayer) + 1; // on
-																		// change
-																		// le
-																		// joueur
-																		// qui
-																		// commence
+																	// change
+																	// le
+																	// joueur
+																	// qui
+																	// commence
 					idJoueur = joueurStart - 1;
 					token = 0;
 					System.exit(1);
@@ -140,9 +174,9 @@ public class Puissance4 {
 				System.out.println("Match nul !");
 				saveResult(0, "egalite"); // affiche égalitée dans le log
 				joueurStart = ((joueurStart) % nbPlayer) + 1; // on change
-																	// le joueur
-																	// qui
-																	// commence
+																// le joueur
+																// qui
+																// commence
 				idJoueur = joueurStart - 1;
 				token = 0;
 				wipe();
@@ -253,11 +287,10 @@ public class Puissance4 {
 
 	private void initPlayers(int nbJoueur) {
 		String writed = new String();
-		
 
 		for (int i = 0; i < nbJoueur; i++) {
 
-			System.out.print("Joueur " + (i+1) + " ?\n > ");
+			System.out.print("Joueur " + (i + 1) + " ?\n > ");
 			writed = readConsole();
 			if (!writed.isEmpty()) { // on s'assure que l'utilisateur n'a
 										// pas
@@ -267,13 +300,13 @@ public class Puissance4 {
 														// espace
 
 				if (args[0].equalsIgnoreCase("humain")) {
-					this.joueur[i] = new Human(i+1, args[1]);
+					this.joueur[i] = new Human(i + 1, args[1]);
 
 				} else if (args[0].equalsIgnoreCase("ia:random")) {
-					this.joueur[i] = new Ia(i+1, args[1], "random");
+					this.joueur[i] = new Ia(i + 1, args[1], "random");
 
 				} else if (args[0].equalsIgnoreCase("ia:monkey")) {
-					this.joueur[i] = new Ia(i+1, args[1], "clever");
+					this.joueur[i] = new Ia(i + 1, args[1], "clever");
 				} else {
 					System.out
 							.print("Le type de joueur doit etre 'humain' ou 'ia'\n > ");
