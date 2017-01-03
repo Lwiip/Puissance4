@@ -1,22 +1,11 @@
 package joueur;
 
+// Class joueur avec id, nom, boléen si humain ou pas, et score
 public abstract class Joueur {
 	protected int id;
 	protected String nom;
 	protected boolean human;
 	protected int score;
-	
-//	public Joueur(){
-//		this.id = 0;
-//		this.nom = "Not declared";
-//		this.human = false;
-//	}
-//	
-//	public Joueur(int id, String nom, boolean isHuman){
-//		this.id = id; //gerer si jamais l'id est -1
-//		this.nom = nom;
-//		this.human = isHuman;
-//	}
 	
 	
 	/*

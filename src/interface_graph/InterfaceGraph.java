@@ -5,7 +5,7 @@ import grille.Grille;
 
 import javax.swing.*;
 
-import sun.org.mozilla.javascript.JavaAdapter;
+
 
 import com.sun.corba.se.spi.ior.WriteContents;
 

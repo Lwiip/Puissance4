@@ -1,10 +1,12 @@
 package grille;
 
+// Class Pion: position du pion x, y et Id du joueur
 class Pion {
 	private int x;
 	private int y;
 	private int idJoueur;
 	
+	//constructeur par défault
 	public Pion(){
 		this.x = 0;
 		this.y = 0;
@@ -17,12 +19,14 @@ class Pion {
 		this.idJoueur = idJoueur;
 	}
 	
+	//pour la copie des pions
 	public Pion(Pion another){
 		this.x=another.x;
 		this.y=another.y;
 		this.idJoueur=another.idJoueur;
 	}
 	
+	//Pour l'affichage dans la console. Prend en compte jusqu'a 8 joueurs
 	protected String affichePion(){
 		if(this.idJoueur == 1){
 			return " X ";
