@@ -208,6 +208,7 @@ public class Puissance4 {
 		nbPartie++;
 		grille.wipe();
 		grille.affichage();
+		interf.setClic(-1);
 
 	}
 
