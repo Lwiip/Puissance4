@@ -20,7 +20,7 @@ public class GetPropertyValues {
 
 	InputStream inputStream;
 
-	public void getPropValues() throws IOException {
+	public void getPropValues() throws IOException {//recupere les valeurs du fichier config.properties
 
 		try {
 			Properties prop = new Properties();

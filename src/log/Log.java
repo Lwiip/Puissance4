@@ -9,7 +9,7 @@ import java.io.Writer;
 
 public class Log {
 
-	public static void clearLog(){
+	public static void clearLog(){ // fonction qui nettoie le log en le suppr
 		try{
 
     		File file = new File("log.txt");
@@ -27,7 +27,7 @@ public class Log {
     	}
 	}
 	
-	public static void append(String logText) {
+	public static void append(String logText) { //ajoute le text au log
 		Writer output;
 		try {
 			output = new BufferedWriter(new FileWriter("log.txt", true));

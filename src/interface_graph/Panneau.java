@@ -14,7 +14,7 @@ public class Panneau extends JPanel {
 	
 	private Grille grille;
 	
-	public void paintComponent(Graphics g) {
+	public void paintComponent(Graphics g) { //creer la grille de cercle
 		for (int i = 0; i < this.hauteur; i++) {
 			for (int j = 0; j < this.largeur; j++) {
 				g.setColor(getColor(i, j));
@@ -23,7 +23,7 @@ public class Panneau extends JPanel {
 		}
 	}
 
-	private Color getColor(int x, int y) {
+	private Color getColor(int x, int y) { //complete la couleur en fonction de l'id du joueur
 		if (this.grille.getIdJoueur(x, y) == 0) {
 			return Color.WHITE;
 		} else if (this.grille.getIdJoueur(x, y) == 1) {
