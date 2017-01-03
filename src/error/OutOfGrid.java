@@ -7,6 +7,7 @@ import java.io.Writer;
 
 import log.*;
 
+// Class erreur saisi des colonnes par les joueurs
 public class OutOfGrid extends RuntimeException{
 	/**
 	 * 
@@ -18,17 +19,18 @@ public class OutOfGrid extends RuntimeException{
 
 	}
 	
-	
+	// colonne non valide
 	public OutOfGrid(int y){
 		y=y+1;
-		System.err.println("Veuillez saisir une entrée valide en " + y +"\n");
-		Log.append("Erreur colonne non valide " + y + "\n");
+		System.err.println("Veuillez saisir une entrée valide en " + y +"\n"); // Affiche dans la console 
+		Log.append("Erreur colonne non valide " + y + "\n"); // Ajout dans le fichier log
 	}
 	
+	// colonne non valide car colonne pleine
 	public OutOfGrid(int y, int v){
 		y=y+1;
-		System.err.println("Veuillez saisir une entrée valide, la colonne " + y +" est pleine !\n");
-		Log.append("Erreur colonne pleine " + y + "\n");
+		System.err.println("Veuillez saisir une entrée valide, la colonne " + y +" est pleine !\n"); // Affiche dans la console
+		Log.append("Erreur colonne pleine " + y + "\n");// Ajout dans le fichier log
 	}
 
 }

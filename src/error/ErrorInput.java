@@ -3,6 +3,7 @@ package error;
 
 import log.Log;
 
+//Classe Erreur pour les entrées saisi des joueurs
 public class ErrorInput extends RuntimeException{
 	/**
 	 * 
@@ -14,11 +15,11 @@ public class ErrorInput extends RuntimeException{
 	}
 	
 	public ErrorInput(int idJoueur){
-		Log.append("Erreur saisie Joueur " + idJoueur + "\n");
+		Log.append("Erreur saisie Joueur " + idJoueur + "\n"); //Ajout dans le fichier log 
 	}
 	
 	public ErrorInput(String writed){
-		Log.append("Erreur colone non valide " +writed+ "\n");
+		Log.append("Erreur colone non valide " +writed+ "\n");//Ajout dans le fichier log 
 		
 	}
 }

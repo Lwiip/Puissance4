@@ -1,5 +1,6 @@
 package error;
 
+//Classe Erreur Joueur id inconnu
 public class InvalidJoueur extends RuntimeException{
 
 	/**
@@ -12,7 +13,7 @@ public class InvalidJoueur extends RuntimeException{
 	}
 	
 	public InvalidJoueur(int id){
-		System.err.println("Utilisateur " + id + " inconnu !");
+		System.err.println("Utilisateur " + id + " inconnu !"); // Affiche dans la console 
 		
 		
 	}
