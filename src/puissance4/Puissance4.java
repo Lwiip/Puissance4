@@ -27,10 +27,10 @@ public class Puissance4 {
 
 	public Puissance4() {
 
-		Log.clearLog();
+		Log.clearLog(); // nouvelle partie on remet le log a l'etat initial
 		System.out.println("Debut du jeu ...");
 
-		GetPropertyValues properties = new GetPropertyValues();
+		GetPropertyValues properties = new GetPropertyValues(); //recupere les valeurs de config
 		int x = 0;
 		int y = 0;
 		try {
@@ -42,9 +42,10 @@ public class Puissance4 {
 		} catch (IOException e) {
 			System.err.println("Erreur lecture config");
 		}
+		
 		joueur = new Joueur[nbPlayer];
 		initPlayers(nbPlayer);
-		saveName();
+		saveName(); //log le nom des joueurs
 		this.grille = new Grille(x, y);
 		this.interf = new InterfaceGraph(x, y, this.grille);
 		this.nbPartie = 0;
@@ -63,12 +64,10 @@ public class Puissance4 {
 		int joueurStart = 1;
 		idJoueur = joueurStart - 1;
 
-		for (;;) {// boucle infiniiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiie
-//			System.setIn(sauv);
-			// idJoueur = checkTurn(j1turn);
-			joueur_have_played = false;
+		for (;;) {// boucle infinie
+			joueur_have_played = false; //au debut d'un tour on s'assure que le joueur n'a pas joué
 
-			this.interf.update();
+			this.interf.update(); // rafraichie l'interface
 
 			System.out.println("Joueur " + (idJoueur + 1) + " > ");
 			try {
@@ -76,7 +75,6 @@ public class Puissance4 {
 
 				if (this.joueur[idJoueur].isHuman()) {
 					// this.writed = readConsole();
-					InputStream test = System.in;
 					
 					InputStreamReader fileInputStream=new InputStreamReader(System.in);
 				    BufferedReader bufferedReader=new BufferedReader(fileInputStream);
@@ -86,11 +84,11 @@ public class Puissance4 {
 							//boucle d'attente
 						}
 						
-						if (System.in.available() > 0){
+						if (System.in.available() > 0){ //si l'entrée est sur la console
 					    	writed = bufferedReader.readLine();
 					    }
 						
-						if (interf.getClic() != -1){
+						if (interf.getClic() != -1){ //si l'entrée est sur l'interface
 							writed = "" + interf.getClic() + "";
 							interf.setClic(-1); //reinit le clic
 						}
@@ -99,19 +97,12 @@ public class Puissance4 {
 						e.printStackTrace();
 					}
 				    
-				    
-				    
-				    
-//					Scanner scanner = new Scanner(System.in);
-					
 
-					
-
-					checkQuit(writed);
-					if (checkInt(writed)) {
+					checkQuit(writed); //on verifie que ce n'est pas la commande Sortir
+					if (checkInt(writed)) { // on verifie que c'est convertible en chiffre
 						column = Integer.parseInt(writed);
 						grille.insertPion(column - 1, idJoueur + 1);
-						saveGame(idJoueur + 1, column, token);
+						saveGame(idJoueur + 1, column, token); //log
 						token++;
 						joueur_have_played = true;
 					} else {
@@ -130,7 +121,7 @@ public class Puissance4 {
 
 				}
 
-				if (!joueur_have_played) {
+				if (!joueur_have_played) { //s'il y a eu une erreur : mauvaise entrée erreur etc tjr au meme joueur de jouer
 					idJoueur--;
 				}
 
@@ -188,7 +179,7 @@ public class Puissance4 {
 		}
 	}
 
-	private void wipe() {
+	private void wipe() { //gere la fin d'une partie (rejouer etc)
 		String retour;
 
 		for (int i = 0; i < nbPlayer; i++) {

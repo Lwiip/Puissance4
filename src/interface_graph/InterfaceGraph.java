@@ -6,17 +6,9 @@ import grille.Grille;
 import javax.swing.*;
 
 
-
-import com.sun.corba.se.spi.ior.WriteContents;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.io.ByteArrayInputStream;
-import java.io.Console;
-import java.io.InputStream;
-import java.util.Scanner;
 
 public class InterfaceGraph {
 	private JButton boutons[];
@@ -56,7 +48,7 @@ public class InterfaceGraph {
 		fenetre.setResizable(false);
 
 		// Met la couleur de fond a bleu
-		pan.setBackground(Color.BLUE);
+		//pan.setBackground(Color.BLUE);
 		// ajout des pions
 		fenetre.setContentPane(pan);
 
@@ -77,7 +69,7 @@ public class InterfaceGraph {
 			elem.addActionListener(new ActionListener() {
 
 				@Override
-				public void actionPerformed(ActionEvent arg0) {
+				public void actionPerformed(ActionEvent arg0) { //effet quand on clique
 					int j = Integer.parseInt(arg0.getActionCommand());
 					clic = j + 1;
 				}
