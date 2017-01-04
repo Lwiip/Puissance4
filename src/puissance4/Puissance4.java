@@ -4,9 +4,7 @@ import interface_graph.InterfaceGraph;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.Scanner;
 
 import joueur.*;
 import log.*;
@@ -16,8 +14,6 @@ import error.*;
 public class Puissance4 {
 
 	private Joueur joueur[];
-	// private Joueur joueur1;
-	// private Joueur joueur2;
 	private Grille grille;
 	private int nbPartie;
 	private int idJoueur;
@@ -30,7 +26,9 @@ public class Puissance4 {
 		Log.clearLog(); // nouvelle partie on remet le log a l'etat initial
 		System.out.println("Debut du jeu ...");
 
-		GetPropertyValues properties = new GetPropertyValues(); //recupere les valeurs de config
+		GetPropertyValues properties = new GetPropertyValues(); // recupere les
+																// valeurs de
+																// config
 		int x = 0;
 		int y = 0;
 		try {
@@ -42,10 +40,10 @@ public class Puissance4 {
 		} catch (IOException e) {
 			System.err.println("Erreur lecture config");
 		}
-		
+
 		joueur = new Joueur[nbPlayer];
 		initPlayers(nbPlayer);
-		saveName(); //log le nom des joueurs
+		saveName(); // log le nom des joueurs
 		this.grille = new Grille(x, y);
 		this.interf = new InterfaceGraph(x, y, this.grille);
 		this.nbPartie = 0;
@@ -65,7 +63,8 @@ public class Puissance4 {
 		idJoueur = joueurStart - 1;
 
 		for (;;) {// boucle infinie
-			joueur_have_played = false; //au debut d'un tour on s'assure que le joueur n'a pas joué
+			joueur_have_played = false; // au debut d'un tour on s'assure que le
+										// joueur n'a pas joué
 
 			this.interf.update(); // rafraichie l'interface
 
@@ -75,38 +74,46 @@ public class Puissance4 {
 
 				if (this.joueur[idJoueur].isHuman()) {
 					// this.writed = readConsole();
-					
-					InputStreamReader fileInputStream=new InputStreamReader(System.in);
-				    BufferedReader bufferedReader=new BufferedReader(fileInputStream);
-					
-				    try {
-						while (System.in.available() <= 0 && interf.getClic() == -1){
-							//boucle d'attente
+
+					InputStreamReader fileInputStream = new InputStreamReader(
+							System.in);
+					BufferedReader bufferedReader = new BufferedReader(
+							fileInputStream);
+
+					try {
+						while (System.in.available() <= 0
+								&& interf.getClic() == -1) {
+							// boucle d'attente
 						}
-						
-						if (System.in.available() > 0){ //si l'entrée est sur la console
-					    	writed = bufferedReader.readLine();
-					    }
-						
-						if (interf.getClic() != -1){ //si l'entrée est sur l'interface
+
+						if (System.in.available() > 0) { // si l'entrée est sur
+															// la console
+							writed = bufferedReader.readLine();
+						}
+
+						if (interf.getClic() != -1) { // si l'entrée est sur
+														// l'interface
 							writed = "" + interf.getClic() + "";
-							interf.setClic(-1); //reinit le clic
+							interf.setClic(-1); // reinit le clic
 						}
-						
+
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
-				    
 
-					checkQuit(writed); //on verifie que ce n'est pas la commande Sortir
-					if (checkInt(writed)) { // on verifie que c'est convertible en chiffre
+					checkQuit(writed); // on verifie que ce n'est pas la
+										// commande Sortir
+					if (checkInt(writed)) { // on verifie que c'est convertible
+											// en chiffre
 						column = Integer.parseInt(writed);
 						grille.insertPion(column - 1, idJoueur + 1);
-						saveGame(idJoueur + 1, column, token); //log
+						saveGame(idJoueur + 1, column, token); // log
 						token++;
 						joueur_have_played = true;
 					} else {
 						new ErrorInput(writed);
+						token = 0; // s'il y a eu une erreur : mauvaise entrée erreur etc tjr au meme
+									// joueur de jouer
 					}
 
 				} else { // si le joueur est un IA
@@ -119,10 +126,6 @@ public class Puissance4 {
 					token++;
 					joueur_have_played = true;
 
-				}
-
-				if (!joueur_have_played) { //s'il y a eu une erreur : mauvaise entrée erreur etc tjr au meme joueur de jouer
-					idJoueur--;
 				}
 
 				if (joueur_have_played) {
@@ -179,7 +182,7 @@ public class Puissance4 {
 		}
 	}
 
-	private void wipe() { //gere la fin d'une partie (rejouer etc)
+	private void wipe() { // gere la fin d'une partie (rejouer etc)
 		String retour;
 
 		for (int i = 0; i < nbPlayer; i++) {
@@ -254,6 +257,7 @@ public class Puissance4 {
 	}
 
 	private void score() {
+		Log.append("Score ");
 		for (int i = 0; i < this.nbPlayer - 1; i++) {
 			Log.append(this.joueur[i].getScore() + " - ");
 		}
@@ -284,30 +288,36 @@ public class Puissance4 {
 
 			System.out.print("Joueur " + (i + 1) + " ?\n > ");
 			writed = readConsole();
+			checkQuit(writed);
 			if (!writed.isEmpty()) { // on s'assure que l'utilisateur n'a
 										// pas
 										// fait juste entrée
 				String args[] = writed.split(" ", 2); // sépare le avant et
 														// apres le 1ere
 														// espace
+				if (args.length > 1) {
+					if (args[0].equalsIgnoreCase("humain")) {
+						this.joueur[i] = new Human(i + 1, args[1]);
 
-				if (args[0].equalsIgnoreCase("humain")) {
-					this.joueur[i] = new Human(i + 1, args[1]);
+					} else if (args[0].equalsIgnoreCase("ia:random")) {
+						this.joueur[i] = new Ia(i + 1, args[1], "random");
 
-				} else if (args[0].equalsIgnoreCase("ia:random")) {
-					this.joueur[i] = new Ia(i + 1, args[1], "random");
-
-				} else if (args[0].equalsIgnoreCase("ia:monkey")) {
-					this.joueur[i] = new Ia(i + 1, args[1], "clever");
+					} else if (args[0].equalsIgnoreCase("ia:monkey")) {
+						this.joueur[i] = new Ia(i + 1, args[1], "clever");
+					} else {
+						System.out
+								.print("Le type de joueur doit etre 'humain' ou 'ia'\n > ");
+						new ErrorInput(idJoueur);
+					}
 				} else {
-					System.out
-							.print("Le type de joueur doit etre 'humain' ou 'ia'\n > ");
-					new ErrorInput(idJoueur);
+					System.out.print("Veuillez entrer un nom\n > ");
+					new ErrorInput(idJoueur + 1);
+					i--;
 				}
 
 			} else {
 				System.out.print("Veuillez entrer du text\n > ");
-				new ErrorInput(idJoueur);
+				new ErrorInput(idJoueur + 1);
 				i--;
 			}
 

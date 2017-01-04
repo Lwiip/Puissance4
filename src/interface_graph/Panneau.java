@@ -9,6 +9,10 @@ import javax.swing.*;
 
 public class Panneau extends JPanel {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int largeur;
 	private int hauteur;
 	

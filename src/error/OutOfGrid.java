@@ -1,10 +1,5 @@
 package error;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Writer;
-
 import log.*;
 
 // Class erreur saisi des colonnes par les joueurs

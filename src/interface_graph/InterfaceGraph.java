@@ -1,6 +1,5 @@
 package interface_graph;
 
-import error.InvalidJoueur;
 import grille.Grille;
 
 import javax.swing.*;

@@ -1,5 +1,6 @@
 Implémenté:
 -toute les fonctions obligatoires (menu, grille, gestions des erreurs, ia et humain, gestionnaire de partie, historique de partie...)
+Nous avons demandé ce que signifiais l'erreur " Erreur saisie colonne xyz" au chargé de tp qui n'a pas pu la différencier de "Erreur colonne non valide -1", nous l'avons donc pas implémenté
 
 Bonus implémenté:
 -ia intelligente du nom de monkey (cf dans packet joueur, class ia, cleveria)
